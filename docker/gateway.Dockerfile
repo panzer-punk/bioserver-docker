@@ -8,6 +8,6 @@ COPY --chown=0:0 ./docker/vars/gateway/etc /etc/dnas
 COPY --chown=0:0 ./docker/vars/gateway/sites-enabled /etc/nginx/sites-enabled
 COPY --chown=0:0 ./docker/vars/gateway/nginx.conf /etc/nginx/nginx.conf
 
-COPY --chown=www-data:www-data ./docker/vars/gateway/var/www /var/www
+COPY --chown=www-data:www-data ./docker/vars/php/www/dnas/index.html /var/www/dnas/index.html
 
 CMD ["nginx", "-g", "daemon off;"]
