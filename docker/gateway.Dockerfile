@@ -16,33 +16,28 @@ RUN apt-get update && apt-get install -y \
     libkrb5-dev \
     git 
 
-RUN apt-get remove -y openssl
-
 WORKDIR /tmp
 
-#Setting up weak ciphers
-RUN wget https://openssl.org/source/openssl-1.0.2q.tar.gz \
-    && tar xzvf openssl-1.0.2q.tar.gz \
+#Setting up openssl
+COPY ./docker/deps/openssl-1.0.2q.tar.gz .
+
+RUN tar xzvf openssl-1.0.2q.tar.gz \
     && cd openssl-1.0.2q 
-    # && ./config --prefix=/usr \
-    #     zlib-dynamic \
+    # && ./config --prefix=/opt/local/openssl-1.0.2 \
     #     --openssldir=/etc/ssl \
     #     shared enable-weak-ssl-ciphers \
     #     enable-ssl3 enable-ssl3-method \
     #     enable-ssl2 \
+    #     -Wl,-rpath=/opt/openssl-1.0.2/lib \
     # && make \
     # && make install
 
-# COPY ./docker/vars/gateway/arm-linux-gnueabihf.conf /etc/ld.so.conf.d/arm-linux-gnueabihf.conf
-
-# RUN ldconfig
-
-#Download nginx
+#Setting up nginx
 RUN wget https://nginx.org/download/nginx-1.26.1.tar.gz && \
     tar xzvf nginx-1.26.1.tar.gz && \
     git clone https://github.com/stnoonan/spnego-http-auth-nginx-module.git nginx-1.26.1/spnego-http-auth-nginx-module
 
-RUN apt-get remove -y nginx nginx-common nginx-core nginx-full
+# RUN apt-get remove -y nginx nginx-common nginx-core nginx-full
 
 WORKDIR /tmp/nginx-1.26.1
 #Compile nginx
@@ -69,16 +64,13 @@ RUN ./configure \
         --with-http_gunzip_module \
         --add-module=spnego-http-auth-nginx-module \
         --with-openssl=/tmp/openssl-1.0.2q \
-        --with-openssl-opt='zlib-dynamic shared enable-weak-ssl-ciphers enable-ssl3 enable-ssl3-method enable-ssl2' \
+        --with-openssl-opt="shared enable-weak-ssl-ciphers enable-ssl3 enable-ssl3-method enable-ssl2 -Wl,-rpath=/opt/openssl-1.0.2/lib" \
+        --with-ld-opt="-L/opt/openssl-1.0.2/lib" \
     && make \
     && make install
 
-# RUN apt-get remove -y \
-#     wget \
-#     tar \ 
-#     gcc \
-#     make \ 
-#     && rm -rf /tmp/*
+COPY --chown=www-data:www-data ./bioserv1/www /var/www/dnas/00000002
+COPY --chown=www-data:www-data ./bioserv2/www /var/www/dnas/00000010
 
 COPY --chown=0:0 ./docker/vars/gateway/etc /etc/dnas 
 RUN cat /etc/dnas/ca-cert.pem >> /etc/dnas/cert-jp.pem \
