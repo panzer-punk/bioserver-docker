@@ -1,8 +1,8 @@
 services:
-  bioapache:
+  biogateway:
     build: 
       context: .
-      dockerfile: docker/apache.Dockerfile
+      dockerfile: docker/gateway.Dockerfile
     ports:
       - "80:80"
       - "443:443"
