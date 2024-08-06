@@ -60,6 +60,9 @@ RUN ./configure \
     && make \
     && make install
 
+#cleanup 
+RUN rm -rf /tmp/*
+
 COPY --chown=www-data:www-data ./bioserv1/www /var/www/dnas/00000002
 COPY --chown=www-data:www-data ./bioserv2/www /var/www/dnas/00000010
 
@@ -71,6 +74,6 @@ RUN cat /etc/dnas/ca-cert.pem >> /etc/dnas/cert-jp.pem \
 COPY --chown=0:0 ./docker/vars/gateway/sites-enabled /etc/nginx/sites-enabled
 COPY --chown=0:0 ./docker/vars/gateway/nginx.conf /etc/nginx/nginx.conf
 
-COPY --chown=www-data:www-data ./docker/vars/php/www/dnas/index.html /var/www/dnas/index.html
+COPY --chown=www-data:www-data ./docker/vars/gateway/index.html /var/www/dnas/index.html
 
 CMD ["nginx", "-g", "daemon off;"]
