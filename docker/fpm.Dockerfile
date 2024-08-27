@@ -1,4 +1,4 @@
-FROM php:7.0-fpm
+FROM php:8.3-fpm
 
 ARG DB_USER
 ARG DB_PASSWORD
