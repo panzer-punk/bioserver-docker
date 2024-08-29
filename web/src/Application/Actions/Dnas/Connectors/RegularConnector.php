@@ -36,7 +36,7 @@ final class RegularConnector implements Connector
         if (file_exists("{$basePath}/packets/{$fname}")) {
             $packet = file_get_contents("{$basePath}/packets/{$fname}");
             // step 2 - encrypt with keyset from query packet
-            $packet = encrypt3n($packet, 0xc8, 0x20, $desKey1, $desKey2, $desKey3, $xorSeed);
+            $packet = $this->encrypt3n($packet, 0xc8, 0x20, $desKey1, $desKey2, $desKey3, $xorSeed);
         
             // step 3 - encrypt with envelope keyset
             $packet = $this->encrypt3n(

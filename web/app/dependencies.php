@@ -16,13 +16,13 @@ return function (ContainerBuilder $containerBuilder) {
         LoggerInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
-            $loggerSettings = $settings->get('logger');
-            $logger = new Logger($settings->get("LOGGER_NAME"));
+            $loggerSettings = $settings->get("logger");
+            $logger = new Logger($loggerSettings["name"]);
 
             $processor = new UidProcessor();
             $logger->pushProcessor($processor);
 
-            $handler = new StreamHandler($settings->get("LOGGER_PATH"), $settings->get("LOGGER_LEVEL"));
+            $handler = new StreamHandler($loggerSettings["path"], $loggerSettings["level"]);
             $logger->pushHandler($handler);
 
             return $logger;

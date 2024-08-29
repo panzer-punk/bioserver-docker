@@ -28,7 +28,7 @@
         "php-di/php-di": "^6.4",
         "slim/psr7": "^1.5",
         "slim/slim": "^4.10",
-        "twig/twig": "^3.0"
+        "slim/twig-view": "^3.4"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^1.0.0",
