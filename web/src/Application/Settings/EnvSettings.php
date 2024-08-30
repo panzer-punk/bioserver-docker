@@ -26,6 +26,12 @@ class EnvSettings implements SettingsInterface
                 "name"  => "bioserver-web-ui",
                 "path"  => "php://stdout",
                 "level" => $_ENV["LOG_LEVEL"] ?? Logger::DEBUG
+            ],
+            "db" => [
+                "host"     => $_ENV["DB_HOST"],
+                "database" => $_ENV["DB_DATABASE"],
+                "user"     => $_ENV["DB_USER"],
+                "password" => $_ENV["DB_PASSWORD"]
             ]
         ];
     }

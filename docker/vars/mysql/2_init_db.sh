@@ -3,10 +3,10 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD <<-EOSQL
     SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
     SET time_zone = "+00:00";
 
-    CREATE DATABASE IF NOT EXISTS \`$BIO1_DB_DATABASE\` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-    GRANT ALL PRIVILEGES ON \`$BIO1_DB_DATABASE\`.* TO '$MYSQL_USER'@'%'; 
+    CREATE DATABASE IF NOT EXISTS \`$DB_DATABASE\` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+    GRANT ALL PRIVILEGES ON \`$DB_DATABASE\`.* TO '$MYSQL_USER'@'%'; 
 
-    USE \`$BIO1_DB_DATABASE\`;
+    USE \`$DB_DATABASE\`;
 
     CREATE TABLE IF NOT EXISTS \`sessions\` (
       \`userid\` varchar(14) NOT NULL,
@@ -19,6 +19,7 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD <<-EOSQL
       \`room\` int(11) DEFAULT '0',
       \`slot\` int(11) DEFAULT '0',
       \`state\` int(11) DEFAULT '0',
+      \`gameid\` varchar(8) NOT NULL,
       KEY \`gamesess\` (\`gamesess\`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

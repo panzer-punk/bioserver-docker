@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
-use App\Domain\Dnas\Connector;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -27,5 +26,23 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        mysqli::class => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class);
+
+            $db = $settings->get("db");
+
+            $connection = mysqli_connect(
+                $db["host"],
+                $db["user"],
+                $db["password"],
+                $db["database"]
+            );
+
+            if (! $connection) {
+                throw new DomainException("Couldn't establish database to database.");
+            }
+
+            return $connection;
+        }
     ]);
 };
