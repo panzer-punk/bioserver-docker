@@ -110,7 +110,7 @@ public class Database {
         
         String retval = "";
         try {
-            pst = (PreparedStatement) con.prepareStatement(String.format("select userid from sessions where sessid='%s'", sessid));
+            pst = (PreparedStatement) con.prepareStatement(String.format("select userid from sessions where sessid='%s' and gameid='%s'", sessid, ServerMain.GAMEID));
             rs = pst.executeQuery();
             if(rs.next()){
                 retval = rs.getString("userid");            
@@ -269,7 +269,8 @@ public class Database {
         ResultSet rs = null;
         PreparedStatement pst = null;
         try {
-            pst = (PreparedStatement) con.prepareStatement("update sessions set area=-1, room=0, slot=0, gamesess=0, state=0");
+            pst = (PreparedStatement) con.prepareStatement("update sessions set area=-1, room=0, slot=0, gamesess=0, state=0 where gameid=?");
+            pst.setString(1, ServerMain.GAMEID);
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.WARNING, null, ex);
@@ -293,12 +294,13 @@ public class Database {
         ResultSet rs = null;
         PreparedStatement pst = null;
         try {
-            pst = (PreparedStatement) con.prepareStatement("update sessions set state=?, area=?, room=?, slot=? where userid=?");
+            pst = (PreparedStatement) con.prepareStatement("update sessions set state=?, area=?, room=?, slot=? where userid=? and gameid=?");
             pst.setInt(1, state);
             pst.setInt(2, area);
             pst.setInt(3, room);
             pst.setInt(4, slot);
             pst.setString(5, userid);
+            pst.setString(6, ServerMain.GAMEID);
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.WARNING, null, ex);
@@ -323,7 +325,7 @@ public class Database {
         PreparedStatement pst = null;
         try {
             String gamenum = (new Integer(gamenumber)).toString();      // TODO: I hate Java for this!
-            pst = (PreparedStatement) con.prepareStatement(String.format("update sessions set gamesess='%s' where userid='%s'", gamenum, userid));
+            pst = (PreparedStatement) con.prepareStatement(String.format("update sessions set gamesess='%s' where userid='%s' and gameid='%s'", gamenum, userid, ServerMain.GAMEID));
             pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.WARNING, null, ex);
@@ -348,7 +350,7 @@ public class Database {
         PreparedStatement pst = null;
         int retval = 0;
         try {
-            pst = (PreparedStatement) con.prepareStatement(String.format("select gamesess from sessions where userid='%s'", userid));
+            pst = (PreparedStatement) con.prepareStatement(String.format("select gamesess from sessions where userid='%s' and gameid='%s'", userid, ServerMain.GAMEID));
             rs = pst.executeQuery();
             if(rs.next()){
                 retval = rs.getInt("gamesess");            

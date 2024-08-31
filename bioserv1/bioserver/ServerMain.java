@@ -31,6 +31,7 @@ public class ServerMain {
     // the server listens on this port
     public final static int LOBBYPORT = 8300;
     public final static int GAMEPORT = 8690;		// if you change this, search for gs_info
+    public final static String GAMEID = "00000002";
     
     // Entry point
     public static void main(String[] args) {
@@ -38,9 +39,6 @@ public class ServerMain {
         System.out.println("------------------------------\n"+
                            "-     fanmade server for     -\n"+
                            "- Biohazard Outbreak File #1 -\n"+
-                           "-                            -\n"+
-                           "- (c) 2013-2019 obsrv.org    -\n"+
-                           "-        no23@deathless.net  -\n"+
                            "------------------------------\n");
 
         // setup the packethandler in his own thread
