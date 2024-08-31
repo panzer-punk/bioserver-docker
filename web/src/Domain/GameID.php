@@ -6,6 +6,6 @@ namespace App\Domain;
 
 enum GameID: string
 {
-    case BIO1 = "000000002";
-    case BIO2 = "000000010";
+    case BIO1 = "00000002";
+    case BIO2 = "00000010";
 }

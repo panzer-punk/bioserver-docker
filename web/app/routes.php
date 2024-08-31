@@ -23,8 +23,6 @@ return function (App $app) {
         array_column(GameID::cases(), "value")
     );
 
-    var_dump($_SERVER);
-
     $app->group("/{gameID:{$gameIDs}}", function (Group $group) {
         $group->post("/login", LoginAction::class);
 
