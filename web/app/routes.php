@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Connect\ViewEnterareasAction;
 use App\Application\Actions\Dnas\ConnectAction;
 use App\Application\Actions\Login\LoginAction;
 use App\Application\Settings\SettingsInterface;
@@ -75,6 +76,7 @@ return function (App $app) {
                     ->render($response, "CRS-top.html.twig");
             }
         );
+        $group->any("/enterareas", ViewEnterareasAction::class);
     });
 
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
