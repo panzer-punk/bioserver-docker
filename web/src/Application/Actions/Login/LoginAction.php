@@ -49,7 +49,7 @@ final class LoginAction extends Action
         }
 
         try {
-            $this->logger->log(Logger::DEBUG, "Game {$gameID} login attempt, username {$username}");
+            $this->logger->log(Logger::DEBUG, "Game {$gameID} login attempt, username {$username}", ["ip" => $ip]);
 
             $handler->handle($username, $password);
 
@@ -64,9 +64,10 @@ final class LoginAction extends Action
                 throw new DomainException("Session creation failed.");
             }
 
-            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username}");
+            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username}", ["ip" => $ip]);
         } catch (LoginException $e) {
-            $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["username" => $username]);
+            //@todo refactor logs
+            $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["username" => $username, "ip" => $ip]);
             
             return $twig->render(
                 $this->response,
@@ -77,7 +78,7 @@ final class LoginAction extends Action
                 ]
             );
         } catch (DomainException $e) {
-            $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}");
+            $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}", ["ip" => $ip]);
 
             return $twig->render(
                 $this->response,
@@ -88,7 +89,7 @@ final class LoginAction extends Action
                 ]
             );
         } catch (Exception $e) {
-            $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}");
+            $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}", ["ip" => $ip, "stack_trace" => $e->getTraceAsString()]);
 
             return $twig->render(
                 $this->response,
@@ -104,7 +105,7 @@ final class LoginAction extends Action
             $this->response,
             "login-successful.html.twig",
             [
-                "link" => "startsession?sessid={$sessid}"
+                "sessid" => $sessid
             ]
         );
     }
@@ -122,10 +123,12 @@ final class LoginAction extends Action
         while (true) {
             $sessid = mt_rand(10000000,99999999);
 
-            $res = mysqli_query($this->connection, 'select count(*) as cnt from sessions where sessid='. $sessid . 'and gameid = "' . $gameID . '"');
+            $res = mysqli_query($this->connection, 'select count(*) as cnt from sessions where sessid='. $sessid . ' and gameid = "' . $gameID . '"');
             $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
 
-            if($row["cnt"] === 0) {
+            $this->logger->info((string) $sessid, ["row" => $row]);
+
+            if($row["cnt"] == 0) {
                 return $sessid;
             }
         }

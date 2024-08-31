@@ -30,8 +30,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      BIO1_DB_DATABASE: ${BIO1_DB_DATABASE}
-      BIO2_DB_DATABASE: ${BIO2_DB_DATABASE}
+      DB_DATABASE: ${DB_DATABASE}
     networks:
       - bio-network
     env_file:

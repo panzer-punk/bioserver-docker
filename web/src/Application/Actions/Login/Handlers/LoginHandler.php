@@ -26,7 +26,7 @@ final class LoginHandler implements LoginHandlerInterface
         $res = mysqli_query($this->connection, 'select count(*) as cnt from users where userid="'. $username .'" and passwd="'. $password .'"');
         $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
 
-        if ($row["cnt"] !== 1) {
+        if ($row["cnt"] != 1) {
             throw new LoginException("Login failed. Your login/password combination is wrong.");
         }
     }
