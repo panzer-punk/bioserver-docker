@@ -53,10 +53,12 @@ final class LoginAction extends Action
 
             $handler->handle($username, $password);
 
+            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username}", ["ip" => $ip]);
+
             //@todo prepared statements
             //drop session for both games
             mysqli_query($this->connection, 'delete from sessions where lower(userid) = lower("' . $data["username"] . '")');
-    
+
             $sessid = $this->sessionID($gameID);
             $res    = mysqli_query($this->connection, 'insert into sessions (userid,ip,port,sessid,lastlogin,gameid) values(lower("' . $username . '"),"'. $ip .'","' . $port . '","'. $sessid . '",now(),"' . $gameID . '")');
     
@@ -64,7 +66,8 @@ final class LoginAction extends Action
                 throw new DomainException("Session creation failed.");
             }
 
-            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username}", ["ip" => $ip]);
+            $this->logger->info("Game {$gameID} session {$sessid} created", ["ip" => $ip]);
+
         } catch (LoginException $e) {
             //@todo refactor logs
             $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["username" => $username, "ip" => $ip]);
@@ -125,8 +128,6 @@ final class LoginAction extends Action
 
             $res = mysqli_query($this->connection, 'select count(*) as cnt from sessions where sessid='. $sessid . ' and gameid = "' . $gameID . '"');
             $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
-
-            $this->logger->info((string) $sessid, ["row" => $row]);
 
             if($row["cnt"] == 0) {
                 return $sessid;
