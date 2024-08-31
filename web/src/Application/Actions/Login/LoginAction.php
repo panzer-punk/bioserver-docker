@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Application\Actions\Login;
 
 use App\Application\Actions\Action;
-use App\Application\Actions\ActionPayload;
 use App\Application\Actions\Login\Handlers\LoginHandler;
 use App\Application\Actions\Login\Handlers\RegisterHandler;
 use App\Domain\Login\LoginException;
 use App\Domain\Login\LoginHandlerInterface;
+use DomainException;
 use Exception;
 use Monolog\Logger;
 use mysqli;
@@ -53,13 +53,15 @@ final class LoginAction extends Action
 
             $handler->handle($username, $password);
 
+            //@todo prepared statements
+            //drop session for both games
             mysqli_query($this->connection, 'delete from sessions where lower(userid) = lower("' . $data["username"] . '")');
     
             $sessid = $this->sessionID($gameID);
             $res    = mysqli_query($this->connection, 'insert into sessions (userid,ip,port,sessid,lastlogin,gameid) values(lower("' . $username . '"),"'. $ip .'","' . $port . '","'. $sessid . '",now(),"' . $gameID . '")');
     
             if (! $res) {
-                throw new Exception("Session creation failed.");
+                throw new DomainException("Session creation failed.");
             }
 
             $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username}");
@@ -74,7 +76,7 @@ final class LoginAction extends Action
                     "url"     => "CRS-top.jsp"
                 ]
             );
-        } catch (Exception $e) {
+        } catch (DomainException $e) {
             $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}");
 
             return $twig->render(
@@ -82,6 +84,17 @@ final class LoginAction extends Action
                 "login-failed.html.twig",
                 [
                     "message" => $e->getMessage(),
+                    "url"     => "login"
+                ]
+            );
+        } catch (Exception $e) {
+            $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}");
+
+            return $twig->render(
+                $this->response,
+                "login-failed.html.twig",
+                [
+                    "message" => "Unknown error.",
                     "url"     => "login"
                 ]
             );

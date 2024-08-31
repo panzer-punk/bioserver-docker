@@ -20,7 +20,7 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD <<-EOSQL
       \`slot\` int(11) DEFAULT '0',
       \`state\` int(11) DEFAULT '0',
       \`gameid\` varchar(8) NOT NULL,
-      KEY \`gamesess\` (\`gamesess\`)
+      KEY \`gamesess\` (\`gamesess\`, \`gameid\`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

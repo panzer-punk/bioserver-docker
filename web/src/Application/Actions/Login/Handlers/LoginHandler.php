@@ -17,7 +17,7 @@ final class LoginHandler implements LoginHandlerInterface
         
     }
 
-    public function handle(string $username, string $password): User
+    public function handle(string $username, string $password): void
     {
         $username  = substr(preg_replace("/[^A-Za-z0-9 _]/", "", $username), 0, 14);
         $password  = substr(preg_replace("/[^A-Za-z0-9 _]/", "", $password), 0, 14);
@@ -29,8 +29,5 @@ final class LoginHandler implements LoginHandlerInterface
         if ($row["cnt"] !== 1) {
             throw new LoginException("Login failed. Your login/password combination is wrong.");
         }
-
-        //@todo return real user data
-        return new User(1, $username, $username, $username);
     }
 }

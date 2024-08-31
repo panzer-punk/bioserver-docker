@@ -23,7 +23,7 @@ class ConnectAction extends Action
         $content = fopen("php://temp", "r+");
 
         if ($content === false) {
-            throw new Exception("Error preparing DNAS response");
+            throw new Exception("Error preparing DNAS response.");
         }
 
         fwrite($content, $res->content);

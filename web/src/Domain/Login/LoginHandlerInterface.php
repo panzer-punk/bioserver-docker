@@ -12,7 +12,7 @@ interface LoginHandlerInterface
      * @throws LoginException
      * @param string $username
      * @param string $password
-     * @return User
+     * @return void
      */
-    public function handle(string $username, string $password): User;
+    public function handle(string $username, string $password): void;
 }

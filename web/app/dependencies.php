@@ -39,7 +39,7 @@ return function (ContainerBuilder $containerBuilder) {
             );
 
             if (! $connection) {
-                throw new DomainException("Couldn't establish database to database.");
+                throw new DomainException("Couldn't establish connection to database.");
             }
 
             return $connection;
