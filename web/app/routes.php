@@ -7,6 +7,8 @@ use App\Application\Actions\Dnas\ConnectAction;
 use App\Application\Actions\Login\LoginAction;
 use App\Application\Settings\SettingsInterface;
 use App\Domain\GameID;
+use App\Domain\Login\PasswordValidatorInterface;
+use App\Domain\Login\UserNameValidatorInterface;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -36,6 +38,9 @@ return function (App $app) {
                  */
                 $settings = $this->get(SettingsInterface::class);
                 
+                $passwordValidator = $this->get(PasswordValidatorInterface::class);
+                $usernameValidator = $this->get(UserNameValidatorInterface::class);
+
                 $title = sprintf(
                     "%s: %s server",
                     $settings->get("version"),
@@ -47,7 +52,9 @@ return function (App $app) {
                         $response,
                         "login.html.twig",
                         [
-                            "title" => $title
+                            "title" => $title,
+                            "passwordCriteria" => $passwordValidator->criteria(),
+                            "usernameCriteria" => $usernameValidator->criteria()
                         ]
                 );
             }

@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Login;
 
-use App\Domain\User\User;
+use App\Application\Actions\Login\ValueObjects\Password;
+use App\Application\Actions\Login\ValueObjects\UserName;
 
 interface LoginHandlerInterface
 {
     /**
      * @throws LoginException
-     * @param string $username
-     * @param string $password
-     * @return void
      */
-    public function handle(string $username, string $password): void;
+    public function handle(UserName $username, Password $password): void;
 }

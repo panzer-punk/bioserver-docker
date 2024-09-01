@@ -7,10 +7,15 @@ namespace App\Application\Actions\Login;
 use App\Application\Actions\Action;
 use App\Application\Actions\Login\Handlers\LoginHandler;
 use App\Application\Actions\Login\Handlers\RegisterHandler;
+use App\Application\Actions\Login\ValueObjects\Password;
+use App\Application\Actions\Login\ValueObjects\UserName;
 use App\Domain\Login\LoginException;
 use App\Domain\Login\LoginHandlerInterface;
+use App\Domain\Login\PasswordValidatorInterface;
+use App\Domain\Login\UserNameValidatorInterface;
 use DomainException;
 use Exception;
+use InvalidArgumentException;
 use Monolog\Logger;
 use mysqli;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +26,9 @@ final class LoginAction extends Action
 {
     public function __construct(
         LoggerInterface $logger,
-        private mysqli $connection
+        private mysqli $connection,
+        private UserNameValidatorInterface $usernameValidator,
+        private PasswordValidatorInterface $passwordValidator
     ) {
         parent::__construct($logger);
     }
@@ -34,12 +41,13 @@ final class LoginAction extends Action
         $handler    = $this->handler($data["login"]);
         $twig       = Twig::fromRequest($this->request);
 
-        $username = $data["username"];
-        $password = $data["password"];
+        $usernameValue = $data["username"] ?? "";
+        $passwordValue = $data["password"] ?? "";
+
         $ip       = $serverData["REMOTE_ADDR"];
         $port     = $serverData["REMOTE_PORT"];
 
-        if (empty($password) || empty($username)) {
+        if (empty($passwordValue) || empty($usernameValue)) {
             $this->logger->log(Logger::DEBUG, "Game {$gameID} login: empty username or password.");
 
             $response = $this->response->withAddedHeader("Location", "CRS-top.jsp");
@@ -49,28 +57,31 @@ final class LoginAction extends Action
         }
 
         try {
-            $this->logger->log(Logger::DEBUG, "Game {$gameID} login attempt, username {$username}", ["ip" => $ip]);
+            $username = new UserName($usernameValue, $this->usernameValidator);
+            $password = new Password($passwordValue, $this->passwordValidator);
+
+            $this->logger->log(Logger::DEBUG, "Game {$gameID} login attempt, username {$username->value}", ["ip" => $ip]);
 
             $handler->handle($username, $password);
 
-            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username}", ["ip" => $ip]);
+            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username->value}", ["ip" => $ip]);
 
             //@todo prepared statements
             //drop session for both games
             mysqli_query($this->connection, 'delete from sessions where lower(userid) = lower("' . $data["username"] . '")');
 
             $sessid = $this->sessionID($gameID);
-            $res    = mysqli_query($this->connection, 'insert into sessions (userid,ip,port,sessid,lastlogin,gameid) values(lower("' . $username . '"),"'. $ip .'","' . $port . '","'. $sessid . '",now(),"' . $gameID . '")');
+            $res    = mysqli_query($this->connection, 'insert into sessions (userid,ip,port,sessid,lastlogin,gameid) values(lower("' . $username->value . '"),"'. $ip .'","' . $port . '","'. $sessid . '",now(),"' . $gameID . '")');
     
             if (! $res) {
                 throw new DomainException("Session creation failed.");
             }
 
-            $this->logger->info("Game {$gameID} session {$sessid} created", ["ip" => $ip]);
+            $this->logger->info("Game {$gameID} session {$sessid} created", ["username" => $username->value, "ip" => $ip]);
 
-        } catch (LoginException $e) {
+        } catch (LoginException|InvalidArgumentException $e) {
             //@todo refactor logs
-            $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["username" => $username, "ip" => $ip]);
+            $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["ip" => $ip]);
             
             return $twig->render(
                 $this->response,

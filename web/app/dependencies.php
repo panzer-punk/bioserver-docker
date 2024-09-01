@@ -2,7 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Login\Validators\Password\DevPasswordValidator;
+use App\Application\Actions\Login\Validators\Password\ProductionPasswordValidator;
+use App\Application\Actions\Login\Validators\UserName\DevUserNameValidator;
+use App\Application\Actions\Login\Validators\UserName\ProductionUserNameValidator;
 use App\Application\Settings\SettingsInterface;
+use App\Domain\Login\PasswordValidatorInterface;
+use App\Domain\Login\UserNameValidatorInterface;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -43,6 +49,24 @@ return function (ContainerBuilder $containerBuilder) {
             }
 
             return $connection;
+        },
+        PasswordValidatorInterface::class => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class);
+
+            $production = $settings->get("production");
+
+            return $production 
+                ? new ProductionPasswordValidator 
+                : new DevPasswordValidator;
+        },
+        UserNameValidatorInterface::class => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class);
+
+            $production = $settings->get("production");
+
+            return $production
+                ? new ProductionUserNameValidator
+                : new DevUserNameValidator;
         }
     ]);
 };
