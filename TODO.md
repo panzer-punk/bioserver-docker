@@ -9,6 +9,16 @@
 - [ ] Production ready builds
   - [x] Hashed passwords
   - [ ] Email confirmation
+  - [ ] Admin panel
+    - [ ] Ban list
+    - [ ] User list
+  - [ ] Extended logging
+  - [ ] Profile page
+    - [ ] User info
+    - [ ] Friend list
+    - [ ] Black list
+    - [ ] Statistics ?
+    - [ ] RetroAchivents integration ?
 
 ## Configuration Management
 
