@@ -3,11 +3,11 @@
 ## General
 
 - [ ] Update dependencies
-  - [ ] Replace apache with nginx
-  - [ ] Update PHP to 8.3
+  - [x] Replace apache with nginx
+  - [x] Update PHP to 8.3
   - [ ] Update MySql to 9.0
 - [ ] Production ready builds
-  - [ ] Hashed passwords
+  - [x] Hashed passwords
   - [ ] Email confirmation
 
 ## Configuration Management
