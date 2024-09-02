@@ -23,8 +23,6 @@ RUN mkdir -p bin/bioserver \
     && mkdir lib \
     && cp /usr/share/java/mysql-connector-j-8.0.32.jar lib/mysql-connector.jar
 
-RUN apt-get install -y lsof iputils-ping
-
 CMD [ "sh", "-c", "/var/www/run.sh" ]
 
 

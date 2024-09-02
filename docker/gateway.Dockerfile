@@ -63,9 +63,6 @@ RUN ./configure \
 #cleanup 
 RUN rm -rf /tmp/*
 
-# COPY --chown=www-data:www-data ./bioserv1/www /var/www/dnas/00000002
-# COPY --chown=www-data:www-data ./bioserv2/www /var/www/dnas/00000010
-
 COPY --chown=www-data:www-data ./web/public /var/www/public
 COPY --chown=www-data:www-data ./docker/vars/gateway/static /var/www/static
 
