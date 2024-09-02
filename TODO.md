@@ -8,7 +8,7 @@
   - [x] Update MySql to 9.0
 - [ ] Production ready builds
   - [x] Hashed passwords
-    [ ] Slim docker images
+  - [ ] Slim docker images
   - [ ] Email confirmation
   - [ ] Admin panel
     - [ ] Ban list
