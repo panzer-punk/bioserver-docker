@@ -2,12 +2,13 @@
 
 ## General
 
-- [ ] Update dependencies
+- [x] Update dependencies
   - [x] Replace apache with nginx
   - [x] Update PHP to 8.3
-  - [ ] Update MySql to 9.0
+  - [x] Update MySql to 9.0
 - [ ] Production ready builds
   - [x] Hashed passwords
+    [ ] Slim docker images
   - [ ] Email confirmation
   - [ ] Admin panel
     - [ ] Ban list
