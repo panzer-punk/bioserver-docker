@@ -13,15 +13,22 @@ use mysqli;
 final class LoginHandler implements LoginHandlerInterface
 {
     public function __construct(
-        private mysqli $connection
+        private mysqli $mysql
     ) {
         
     }
 
     public function handle(UserName $username, Password $password): void
     {
-        $res = mysqli_query($this->connection, 'select count(*) as cnt from users where userid="'. $username->value .'" and passwd="'. $password->value .'"');
-        $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+        $userid = $username->value;
+        $passwd = $password->value;
+
+        $stmnt = $this->mysql->prepare("select count(*) as cnt from users where userid = ? and passwd = ?");
+        $stmnt->bind_param("ss", $userid, $passwd);
+        $stmnt->execute();
+        
+        $row = $stmnt->get_result()
+            ->fetch_array(MYSQLI_ASSOC);
 
         if ($row["cnt"] != 1) {
             throw new LoginException("Login failed. Your login/password combination is wrong.");

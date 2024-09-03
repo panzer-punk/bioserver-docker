@@ -26,7 +26,7 @@ final class LoginAction extends Action
 {
     public function __construct(
         LoggerInterface $logger,
-        private mysqli $connection,
+        private mysqli $mysql,
         private UserNameValidatorInterface $usernameValidator,
         private PasswordValidatorInterface $passwordValidator
     ) {
@@ -59,6 +59,7 @@ final class LoginAction extends Action
         try {
             $username = new UserName($usernameValue, $this->usernameValidator);
             $password = new Password($passwordValue, $this->passwordValidator);
+            $userid   = $username->value;
 
             $this->logger->log(Logger::DEBUG, "Game {$gameID} login attempt, username {$username->value}", ["ip" => $ip]);
 
@@ -66,13 +67,20 @@ final class LoginAction extends Action
 
             $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username->value}", ["ip" => $ip]);
 
-            //@todo prepared statements
             //drop session for both games
-            mysqli_query($this->connection, 'delete from sessions where lower(userid) = lower("' . $data["username"] . '")');
+            $stmnt = $this->mysql->prepare("delete from sessions where userid = ?");
+            $stmnt->bind_param("s", $userid);
+            $res = $stmnt->execute();
+
+            if (! $res) {
+                throw new DomainException("Session creation failed.");
+            }
 
             $sessid = $this->sessionID($gameID);
-            $res    = mysqli_query($this->connection, 'insert into sessions (userid,ip,port,sessid,lastlogin,gameid) values(lower("' . $username->value . '"),"'. $ip .'","' . $port . '","'. $sessid . '",now(),"' . $gameID . '")');
-    
+            $stmnt = $this->mysql->prepare("insert into sessions (userid, ip, port, sessid, lastlogin, gameid) values (?, ?, ?, ?, now(), ?)");
+            $stmnt->bind_param("ssiss", $userid, $ip, $port, $sessid, $gameID);
+            $res = $stmnt->execute();
+
             if (! $res) {
                 throw new DomainException("Session creation failed.");
             }
@@ -127,8 +135,8 @@ final class LoginAction extends Action
     private function handler(string $action): LoginHandlerInterface
     {
         return match ($action) {
-            "newaccount" => new RegisterHandler($this->connection),
-            "manual"     => new LoginHandler($this->connection)
+            "newaccount" => new RegisterHandler($this->mysql),
+            "manual"     => new LoginHandler($this->mysql)
         };
     }
 
@@ -137,8 +145,14 @@ final class LoginAction extends Action
         while (true) {
             $sessid = mt_rand(10000000,99999999);
 
-            $res = mysqli_query($this->connection, 'select count(*) as cnt from sessions where sessid='. $sessid . ' and gameid = "' . $gameID . '"');
-            $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+            $res = $this->mysql->query(
+                sprintf(
+                    "select count(*) as cnt from sessions where sessid = %s and gameid = %s", 
+                    $sessid, 
+                    $gameID
+                )
+            );
+            $row = $res->fetch_array(MYSQLI_ASSOC);
 
             if($row["cnt"] == 0) {
                 return $sessid;

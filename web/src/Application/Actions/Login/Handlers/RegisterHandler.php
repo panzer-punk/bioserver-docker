@@ -14,14 +14,20 @@ use mysqli;
 final class RegisterHandler implements LoginHandlerInterface
 {
     public function __construct(
-        private mysqli $connection
+        private mysqli $mysql
     ) {
         
     }
 
     public function handle(UserName $username, Password $password): void
     {
-        $res = mysqli_query($this->connection, 'insert into users (userid, passwd) values("'. $username->value .'","'. $password->value .'")');
+        $userid = $username->value;
+        $passwd = $password->value; 
+
+        $stmnt = $this->mysql->prepare("insert into users (userid, passwd) values (?, ?)");
+        $stmnt->bind_param("ss", $userid, $passwd);
+
+        $res = $stmnt->execute();
 
         if (! $res) {
             throw new LoginException("Registration failed.");
