@@ -44,7 +44,7 @@ class ConnectAction extends Action
         $action = $this->resolveArg("action");
         $folder = $this->resolveArg("folder");
 
-        $path = __DIR__ . "/storage/dnas/{$folder}";
+        $path = __DIR__ . "../../../../../storage/dnas/{$folder}";
 
         return match ($action) {
             "connect" => new RegularConnector($path),
