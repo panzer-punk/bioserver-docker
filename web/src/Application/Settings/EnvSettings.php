@@ -14,14 +14,14 @@ class EnvSettings implements SettingsInterface
 
     public function __construct()
     {
-        $production = $_ENV["PRODUCTION"] ?? false;
+        $production = filter_var($_ENV["PRODUCTION"] ?? false, FILTER_VALIDATE_BOOL);
 
         $this->settings = [
             "version"             => "2.0.0-beta",
             "production"          => $production,
             "displayErrorDetails" => ! $production,
-            "logError"            => $_ENV["LOG_ERROR"] ?? false,
-            "logErrorDetails"     => $_ENV["LOG_ERROR_DETAILS"] ?? false,
+            "logError"            => filter_var($_ENV["LOG_ERROR"] ?? false, FILTER_VALIDATE_BOOL),
+            "logErrorDetails"     => filter_var($_ENV["LOG_ERROR_DETAILS"] ?? false, FILTER_VALIDATE_BOOL),
             "logger" => [
                 "name"  => "bioserver-web-ui",
                 "path"  => "php://stdout",

@@ -7,10 +7,13 @@ namespace App\Application\Actions\Dnas\Connectors;
 use App\Domain\Dnas\Connector;
 use App\Domain\Dnas\ConnectResults;
 use App\Domain\Dnas\DnasPacketException;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 final class RegularConnector implements Connector
 {
     public function __construct(
+        private LoggerInterface $logger,
         private string $basePath
     ) {
         
@@ -32,9 +35,21 @@ final class RegularConnector implements Connector
         $desKey3 = pack("H*", substr($fullkey, 0x20, 0x10));
         $xorSeed = pack("H*", substr($fullkey, 0x30, 0x10));
 
+        $packetPath = "{$basePath}/packets/{$fname}";
+        $this->logger->log(Logger::INFO, "Reading packet: {$packetPath}");
+
         // step 1 - prepare the answer
-        if (file_exists("{$basePath}/packets/{$fname}")) {
-            $packet = file_get_contents("{$basePath}/packets/{$fname}");
+        if (file_exists($packetPath)) {
+            $packet = file_get_contents($packetPath);
+
+            if ($packet === false) {
+                $this->logger->log(Logger::ERROR, "{$packetPath} file_get_contents returned false");
+
+                throw new DnasPacketException;
+            }
+
+            $this->logger->log(Logger::INFO, "Encrypting packet: {$packetPath}");
+
             // step 2 - encrypt with keyset from query packet
             $packet = $this->encrypt3n($packet, 0xc8, 0x20, $desKey1, $desKey2, $desKey3, $xorSeed);
         
@@ -49,6 +64,8 @@ final class RegularConnector implements Connector
                 pack("H*", "c510a6400a9b022f")
             );
         } else {
+            $this->logger->log(Logger::WARNING, "{$packetPath} no such file");
+
             $packet = file_get_contents("{$basePath}/error.raw");
         };
 
