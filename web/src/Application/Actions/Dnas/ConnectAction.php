@@ -26,10 +26,24 @@ class ConnectAction extends Action
 
         $res     = $connector->connect($packet);
 
-        $this->response->getBody()->write($res->content);
+        $bytes = $this->response->getBody()->write($res->content);
 
-        return $this->response->withHeader("Content-Type", $res->contentType)
-            ->withHeader("Content-Length", $res->contentLength);
+        $this->logger->log(
+            Logger::DEBUG, 
+            "Packet data", 
+            [
+                "ip" => $ip, 
+                "Content-Type" => $res->contentType, 
+                "Content-Length" => $res->contentLength,
+                "bytes" => $bytes
+            ]
+        );
+
+        return $this->response
+            ->withHeader("Content-Type", $res->contentType)
+            ->withHeader("Content-Length", $res->contentLength)
+            ->withProtocolVersion("1.0")
+            ->withStatus(200, "OK");
     }
 
     private function connector()
