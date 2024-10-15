@@ -20,8 +20,8 @@ WORKDIR /tmp
 
 #Setting up openssl
 
-RUN wget https://github.com/openssl/openssl/releases/download/openssl-3.3.1/openssl-3.3.1.tar.gz \
-    && tar xzvf openssl-3.3.1.tar.gz 
+RUN wget https://github.com/openssl/openssl/releases/download/OpenSSL_1_0_2q/openssl-1.0.2q.tar.gz \
+    && tar xzvf openssl-1.0.2q.tar.gz 
 
 #Setting up nginx
 RUN wget https://nginx.org/download/nginx-1.26.1.tar.gz && \
@@ -54,9 +54,9 @@ RUN ./configure \
         --with-http_mp4_module \
         --with-http_gunzip_module \
         --add-module=spnego-http-auth-nginx-module \
-        --with-openssl=/tmp/openssl-3.3.1 \
-        --with-openssl-opt="shared enable-weak-ssl-ciphers enable-ssl3 enable-ssl3-method enable-ssl2 -Wl,-rpath=/opt/openssl-3.3.1/lib" \
-        --with-ld-opt="-L/opt/openssl-3.3.1/lib" \
+        --with-openssl=/tmp/openssl-1.0.2q \
+        --with-openssl-opt="shared enable-weak-ssl-ciphers enable-ssl3 enable-ssl3-method enable-ssl2 -Wl,-rpath=/opt/openssl-1.0.2q/lib" \
+        --with-ld-opt="-L/opt/openssl-1.0.2q/lib" \
     && make \
     && make install
 
