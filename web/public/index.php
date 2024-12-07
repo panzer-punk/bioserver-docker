@@ -19,6 +19,11 @@ define("APP_ROOT", __DIR__ . "/..");
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 
+//@todo Rewrite REQUEST_URI in Apache level
+if (! empty($_SERVER["REQUEST_URI_APACHE"])) {
+	$_SERVER["REQUEST_URI"] = $_SERVER["REQUEST_URI_APACHE"];
+}
+
 if (false) { // Should be set to true in production
 	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
