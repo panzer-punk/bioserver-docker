@@ -15,6 +15,6 @@ final class DevPasswordValidator implements PasswordValidatorInterface
 
     public function criteria(): string
     {
-        return "Password must be at least 1 character long.";
+        return "Password must be at least</br> 1 character long.";
     }
 }

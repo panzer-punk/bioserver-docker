@@ -8,6 +8,7 @@ use App\Application\Actions\Action;
 use App\Application\Actions\Dnas\Connectors\OthersConnector;
 use App\Application\Actions\Dnas\Connectors\RegularConnector;
 use Exception;
+use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Response;
@@ -17,26 +18,34 @@ class ConnectAction extends Action
 {
     protected function action(): ResponseInterface
     {
+        $ip        = $this->request->getServerParams()["REMOTE_ADDR"];
         $packet    = $this->request->getBody()->getContents();
-        $res       = $this->connector()->connect($packet);
+        $connector = $this->connector();
 
-        $content = fopen("php://temp", "r+");
+        $this->logger->log(Logger::INFO, "DNAS verification started: {$this->request->getUri()}", ["ip" => $ip, "connector" => $connector::class]);
 
-        if ($content === false) {
-            throw new Exception("Error preparing DNAS response.");
-        }
+        $res = $connector->connect($packet);
 
-        fwrite($content, $res->content);
-        rewind($content);
+        $this->logger->log(Logger::DEBUG, "DNAS packet value", ["value" => $res->content, "ip" => $ip]);
 
-        return new Response(
-            200,
-            new Headers([
-                "Content-Type"   => $res->contentType,
-                "Content-Length" => $res->contentLength
-            ]),
-            new Stream($content)
+        $bytes = $this->response->getBody()->write($res->content);
+
+        $this->logger->log(
+            Logger::DEBUG, 
+            "Packet data", 
+            [
+                "ip" => $ip, 
+                "Content-Type" => $res->contentType, 
+                "Content-Length" => $res->contentLength,
+                "bytes" => $bytes
+            ]
         );
+
+        return $this->response
+            ->withHeader("Content-Type", $res->contentType)
+            ->withHeader("Content-Length", $res->contentLength)
+            ->withProtocolVersion("1.0")
+            ->withStatus(200, "OK");
     }
 
     private function connector()
@@ -44,11 +53,11 @@ class ConnectAction extends Action
         $action = $this->resolveArg("action");
         $folder = $this->resolveArg("folder");
 
-        $path = __DIR__ . "/storage/dnas/{$folder}";
+        $path = APP_ROOT . "/storage/dnas/{$folder}";
 
         return match ($action) {
-            "connect" => new RegularConnector($path),
-            "others"  => new OthersConnector($path)
+            "connect" => new RegularConnector($this->logger, $path),
+            "others"  => new OthersConnector($this->logger, $path)
         };
     }
 }

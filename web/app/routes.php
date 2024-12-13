@@ -46,6 +46,7 @@ return function (App $app) {
                     $settings->get("version"),
                     $settings->get("production") ? "production" : "non production"
                 );
+                $gameID = $args["gameID"];
 
                 return Twig::fromRequest($request)
                     ->render(
@@ -54,7 +55,8 @@ return function (App $app) {
                         [
                             "title" => $title,
                             "passwordCriteria" => $passwordValidator->criteria(),
-                            "usernameCriteria" => $usernameValidator->criteria()
+                            "usernameCriteria" => $usernameValidator->criteria(),
+                            "gameID" => $gameID
                         ]
                 );
             }
@@ -84,10 +86,5 @@ return function (App $app) {
             }
         );
         $group->any("/enterareas", ViewEnterareasAction::class);
-    });
-
-    $app->options('/{routes:.*}', function (Request $request, Response $response) {
-        // CORS Pre-Flight OPTIONS Request Handler
-        return $response;
     });
 };
