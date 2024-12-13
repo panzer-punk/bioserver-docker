@@ -65,11 +65,8 @@ COPY --chown=0:0 ./docker/vars/gateway/etc /etc/dnas
 COPY --chown=www-data:www-data ./web/public /var/www/public
 COPY --chown=www-data:www-data ./docker/vars/gateway/static /var/www/public
 
-RUN apt-get install -y iputils-ping
-
-#Start this shit
 WORKDIR /var/www
-#better pass to conf.d
+
 COPY ./docker/vars/gateway/httpd.conf /opt/gateway/conf/httpd.conf
 COPY --chmod=754 ./docker/vars/gateway/start.sh /var/www/
 
