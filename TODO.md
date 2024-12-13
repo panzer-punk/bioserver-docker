@@ -3,7 +3,7 @@
 ## General
 
 - [x] Update dependencies
-  - [x] Replace apache with nginx
+  - [x] Replace apache with nginx (didn't end well)
   - [x] Update PHP to 8.3
   - [x] Update MySql to 9.0
 - [ ] Production ready builds
