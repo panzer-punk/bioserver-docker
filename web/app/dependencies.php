@@ -53,7 +53,7 @@ return function (ContainerBuilder $containerBuilder) {
         PasswordValidatorInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
-            $production = $settings->get("production");
+            $production = $settings->get("production") && ! $settings->get("force_dev_login");
 
             if ($production) {
                 return new ProductionPasswordValidator;
@@ -64,7 +64,7 @@ return function (ContainerBuilder $containerBuilder) {
         UserNameValidatorInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
-            $production = $settings->get("production");
+            $production = $settings->get("production") && ! $settings->get("force_dev_login");
 
             if ($production) {
                 return new ProductionUserNameValidator;
