@@ -24,13 +24,15 @@ if (! empty($_SERVER["REQUEST_URI_APACHE"])) {
 	$_SERVER["REQUEST_URI"] = $_SERVER["REQUEST_URI_APACHE"];
 }
 
-if (false) { // Should be set to true in production
-	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
-}
-
 // Set up settings
 $settings = require __DIR__ . '/../app/settings.php';
 $settings($containerBuilder);
+
+$productionBuild = filter_var($_ENV["APP_PRODUCTION_BUILD"] ?? true, FILTER_VALIDATE_BOOL);
+
+if ($productionBuild) { // Should be set to true in production
+	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+}
 
 // Set up dependencies
 $dependencies = require __DIR__ . '/../app/dependencies.php';
@@ -47,7 +49,7 @@ $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
-$twig = Twig::create(__DIR__ . "/../views", ["cache" => false]);
+$twig = Twig::create(__DIR__ . "/../views", ["cache" => __DIR__ . '/../var/cache/twig']);
 
 // Register middleware
 $middleware = require __DIR__ . '/../app/middleware.php';

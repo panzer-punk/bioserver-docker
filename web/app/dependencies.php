@@ -55,18 +55,22 @@ return function (ContainerBuilder $containerBuilder) {
 
             $production = $settings->get("production");
 
-            return $production 
-                ? new ProductionPasswordValidator 
-                : new DevPasswordValidator;
+            if ($production) {
+                return new ProductionPasswordValidator;
+            } else {
+                return new DevPasswordValidator;
+            }
         },
         UserNameValidatorInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
             $production = $settings->get("production");
 
-            return $production
-                ? new ProductionUserNameValidator
-                : new DevUserNameValidator;
+            if ($production) {
+                return new ProductionUserNameValidator;
+            } else {
+                return new DevUserNameValidator;
+            }
         }
     ]);
 };

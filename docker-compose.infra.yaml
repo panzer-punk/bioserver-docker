@@ -16,16 +16,15 @@ services:
       context: .
       dockerfile: docker/fpm.Dockerfile
       args:
-        - UID=${UID}
-        - GID=${GID}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+        - APP_PRODUCTION_BUILD=${APP_PRODUCTION_BUILD}
     env_file:
       - .env
     depends_on:
       - biomysql
     networks:
       - bio-network
-    volumes:
-      - ./web:/var/www:ro
 
   biomysql:
     image: mysql:9.0

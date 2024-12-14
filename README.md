@@ -13,7 +13,7 @@ To briefly state the goal behind this project, it's simply to preserve [dev ghos
 5. disable systemd-resovled `make disable-systemd-resolved`
 
 ### Running game server
-1. run infrastracture `docker compose -f docker-compose.infra.yaml up -d`
+1. run infrastructure `docker compose -f docker-compose.infra.yaml up -d`
 2. run game server\
 Just run `docker compose -f docker-compose.bio1.yaml up --build` for outbreak 1 and `docker compose -f docker-compose.bio2.yaml up --build` for outbreak 2\
 **You can run them both!**\
@@ -22,3 +22,13 @@ Just run `docker compose -f docker-compose.bio1.yaml up --build` for outbreak 1 
 ### After shutdown
 **DO NOT FORGET TO ENABLE systemd-resolved**\
 Simply run `make enable-systemd-resovled`
+
+## Develop
+
+### Web
+
+By default, the web application is built in production mode and changes in the code will not be applied until the application is rebuilt.<br>
+To make changes to the code without rebuilding, follow these steps:
+1. Set APP_PRODUCTION_BUILD variable to false in .env (APP_PRODUCTION_BUILD=false)
+2. Override biofpm volume by `cp docker/docker-compose.override.dev.yaml docker-compose.override.yaml`
+3. Add override file to docker compose up command. `docker compose -f docker-compose.infra.yaml -f docker-compose.override.yaml up`
