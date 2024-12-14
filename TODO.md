@@ -26,4 +26,4 @@
 - [ ] Game server
   - [ ] Port management
 - [ ] Web server
-  - [ ] App environment setup (production, local)
+  - [x] App environment setup (production, local)
