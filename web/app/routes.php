@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Application\Actions\Connect\ViewEnterareasAction;
 use App\Application\Actions\Dnas\ConnectAction;
-use App\Application\Actions\Login\LoginAction;
-use App\Application\Actions\Login\StartSessionAction;
-use App\Application\Actions\Login\ViewCRSTopAction;
-use App\Application\Actions\Login\ViewLoginAction;
+use App\Application\Actions\Outbreak\ViewEnterareasAction;
+use App\Application\Actions\Outbreak\LoginAction;
+use App\Application\Actions\Outbreak\StartSessionAction;
+use App\Application\Actions\Outbreak\ViewCRSTopAction;
+use App\Application\Actions\Outbreak\ViewLoginAction;
 use App\Domain\GameID;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;

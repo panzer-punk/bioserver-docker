@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Login;
+namespace App\Domain\Outbreak;
 
-use App\Application\Actions\Login\ValueObjects\Password;
-use App\Application\Actions\Login\ValueObjects\UserName;
+use App\Application\Actions\Outbreak\ValueObjects\Password;
+use App\Application\Actions\Outbreak\ValueObjects\UserName;
 
 interface LoginHandlerInterface
 {

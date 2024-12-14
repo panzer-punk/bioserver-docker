@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login;
+namespace App\Application\Actions\Outbreak;
 
 use App\Application\Actions\Action;
 use App\Application\Settings\SettingsInterface;
-use App\Domain\Login\PasswordValidatorInterface;
-use App\Domain\Login\UserNameValidatorInterface;
+use App\Domain\Outbreak\PasswordValidatorInterface;
+use App\Domain\Outbreak\UserNameValidatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
 
 final class ViewLoginAction extends Action
 {
+    private const LOGIN_VIEW = "outbreak/login.html.twig";
+
     public function __construct(
         LoggerInterface $logger,
         private SettingsInterface $settings,
@@ -37,7 +39,7 @@ final class ViewLoginAction extends Action
 
         return $twig->render(
                 $this->response,
-                "login.html.twig",
+                self::LOGIN_VIEW,
                 [
                     "title" => $title,
                     "passwordCriteria" => $this->passwordValidator->criteria(),

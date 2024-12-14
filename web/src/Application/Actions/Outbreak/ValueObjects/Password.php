@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login\ValueObjects;
+namespace App\Application\Actions\Outbreak\ValueObjects;
 
-use App\Domain\Login\PasswordValidatorInterface;
+use App\Domain\Outbreak\PasswordValidatorInterface;
 use InvalidArgumentException;
 
 final class Password

@@ -49,7 +49,7 @@ $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
-$twig = Twig::create(__DIR__ . "/../views", ["cache" => __DIR__ . '/../var/cache/twig']);
+$twig = Twig::create(__DIR__ . "/../views", ["cache" => $productionBuild ? __DIR__ . '/../var/cache/twig' : false]);
 
 // Register middleware
 $middleware = require __DIR__ . '/../app/middleware.php';

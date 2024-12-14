@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login\Validators\UserName;
+namespace App\Application\Actions\Outbreak\Validators\UserName;
 
-use App\Domain\Login\UserNameValidatorInterface;
+use App\Domain\Outbreak\UserNameValidatorInterface;
 
 final class DevUserNameValidator implements UserNameValidatorInterface
 {

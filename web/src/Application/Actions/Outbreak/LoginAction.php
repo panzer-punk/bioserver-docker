@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login;
+namespace App\Application\Actions\Outbreak;
 
 use App\Application\Actions\Action;
-use App\Application\Actions\Login\Handlers\LoginHandler;
-use App\Application\Actions\Login\Handlers\RegisterHandler;
-use App\Application\Actions\Login\ValueObjects\Password;
-use App\Application\Actions\Login\ValueObjects\UserName;
-use App\Domain\Login\LoginException;
-use App\Domain\Login\LoginHandlerInterface;
-use App\Domain\Login\PasswordValidatorInterface;
-use App\Domain\Login\UserNameValidatorInterface;
+use App\Application\Actions\Outbreak\Handlers\LoginHandler;
+use App\Application\Actions\Outbreak\Handlers\RegisterHandler;
+use App\Application\Actions\Outbreak\ValueObjects\Password;
+use App\Application\Actions\Outbreak\ValueObjects\UserName;
+use App\Domain\Outbreak\LoginException;
+use App\Domain\Outbreak\LoginHandlerInterface;
+use App\Domain\Outbreak\PasswordValidatorInterface;
+use App\Domain\Outbreak\UserNameValidatorInterface;
 use DomainException;
 use Exception;
 use InvalidArgumentException;
@@ -24,6 +24,9 @@ use Slim\Views\Twig;
 
 final class LoginAction extends Action
 {
+    private const LOGIN_FAILED_VIEW = "outbreak/login-failed.html.twig";
+    private const LOGIN_SUCCESSFUL_VIEW = "outbreak/login-successful.html.twig";
+
     public function __construct(
         LoggerInterface $logger,
         private mysqli $mysql,
@@ -93,7 +96,7 @@ final class LoginAction extends Action
             
             return $twig->render(
                 $this->response,
-                "login-failed.html.twig",
+                self::LOGIN_FAILED_VIEW,
                 [
                     "message" => $e->getMessage(),
                     "url"     => "CRS-top.jsp"
@@ -104,7 +107,7 @@ final class LoginAction extends Action
 
             return $twig->render(
                 $this->response,
-                "login-failed.html.twig",
+                self::LOGIN_FAILED_VIEW,
                 [
                     "message" => $e->getMessage(),
                     "url"     => "login"
@@ -115,7 +118,7 @@ final class LoginAction extends Action
 
             return $twig->render(
                 $this->response,
-                "login-failed.html.twig",
+                self::LOGIN_FAILED_VIEW,
                 [
                     "message" => "Unknown error.",
                     "url"     => "login"
@@ -125,7 +128,7 @@ final class LoginAction extends Action
 
         return $twig->render(
             $this->response,
-            "login-successful.html.twig",
+            self::LOGIN_SUCCESSFUL_VIEW,
             [
                 "sessid" => $sessid
             ]
