@@ -1,24 +1,13 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
-    "keywords": [
-        "microframework",
-        "rest",
-        "router",
-        "psr7"
-    ],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "name": "panzer_punk/outbreak-web-ui",
+    "description": "Web UI for Outbreak server",
+    "type": "project",
+    "homepage": "https://github.com/panzer-punk/bioserver-docker",
     "license": "MIT",
     "authors": [
         {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
-        },
-        {
-            "name": "Pierre Berube",
-            "email": "pierre@lgse.com",
-            "homepage": "http://www.lgse.com/"
+            "name": "Daniil Budarnyy",
+            "homepage": "https://github.com/panzer-punk"
         }
     ],
     "require": {

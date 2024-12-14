@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Application\Actions\Login\Validators\Password\DevPasswordValidator;
-use App\Application\Actions\Login\Validators\Password\ProductionPasswordValidator;
-use App\Application\Actions\Login\Validators\UserName\DevUserNameValidator;
-use App\Application\Actions\Login\Validators\UserName\ProductionUserNameValidator;
+use App\Application\Actions\Outbreak\Validators\Password\DevPasswordValidator;
+use App\Application\Actions\Outbreak\Validators\Password\ProductionPasswordValidator;
+use App\Application\Actions\Outbreak\Validators\UserName\DevUserNameValidator;
+use App\Application\Actions\Outbreak\Validators\UserName\ProductionUserNameValidator;
 use App\Application\Settings\SettingsInterface;
-use App\Domain\Login\PasswordValidatorInterface;
-use App\Domain\Login\UserNameValidatorInterface;
+use App\Domain\Outbreak\PasswordValidatorInterface;
+use App\Domain\Outbreak\UserNameValidatorInterface;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -53,7 +53,7 @@ return function (ContainerBuilder $containerBuilder) {
         PasswordValidatorInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
-            $production = $settings->get("production");
+            $production = $settings->get("production") && ! $settings->get("force_dev_login");
 
             if ($production) {
                 return new ProductionPasswordValidator;
@@ -64,7 +64,7 @@ return function (ContainerBuilder $containerBuilder) {
         UserNameValidatorInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
-            $production = $settings->get("production");
+            $production = $settings->get("production") && ! $settings->get("force_dev_login");
 
             if ($production) {
                 return new ProductionUserNameValidator;

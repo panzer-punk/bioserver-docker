@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Connect;
+namespace App\Application\Actions\Outbreak;
 
 use App\Application\Actions\Action;
 use App\Domain\GameID;
@@ -12,6 +12,8 @@ use Slim\Views\Twig;
 
 final class ViewEnterareasAction extends Action
 {
+    private const ENTERAREAS_VIEW = "outbreak/enterareas.html.twig";
+
     //@todo managable areas
     private array $areas = [];
 
@@ -58,7 +60,7 @@ final class ViewEnterareasAction extends Action
         return Twig::fromRequest($this->request)
             ->render(
                 $this->response,
-                "enterareas.html.twig",
+                self::ENTERAREAS_VIEW,
                 [
                     "areas" => $this->areas[$gameID]
                 ]

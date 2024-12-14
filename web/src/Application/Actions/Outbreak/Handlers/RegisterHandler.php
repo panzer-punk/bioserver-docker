@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login\Handlers;
+namespace App\Application\Actions\Outbreak\Handlers;
 
-use App\Application\Actions\Login\ValueObjects\Password;
-use App\Application\Actions\Login\ValueObjects\UserName;
-use App\Domain\Login\LoginException;
-use App\Domain\Login\LoginHandlerInterface;
+use App\Application\Actions\Outbreak\ValueObjects\Password;
+use App\Application\Actions\Outbreak\ValueObjects\UserName;
+use App\Domain\Outbreak\LoginException;
+use App\Domain\Outbreak\LoginHandlerInterface;
 use App\Domain\User\User;
 use mysqli;
 

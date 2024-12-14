@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login\Validators\Password;
+namespace App\Application\Actions\Outbreak\Validators\Password;
 
-use App\Domain\Login\PasswordValidatorInterface;
+use App\Domain\Outbreak\PasswordValidatorInterface;
 
 final class ProductionPasswordValidator implements PasswordValidatorInterface
 {

@@ -6,13 +6,15 @@ ARG GID
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli && \
     docker-php-ext-enable mysqli && \
-    apt-get update && apt-get install -y unzip
+    apt-get update && apt-get install -y unzip && \
+    mkdir /home/www-data && \
+    chmod 755 /home/www-data && \
+    chown -R www-data:www-data /home/www-data && \
+    usermod -u $UID -d /home/www-data www-data && \
+    groupmod -g $GID www-data
 
 #Installing and setting up DNAS
 WORKDIR /tmp
-
-RUN usermod -u $UID www-data
-RUN groupmod -g $GID www-data
 
 COPY --from=composer:2.7.8 /usr/bin/composer /usr/local/bin/composer
 COPY --chown=www-data:www-data ./web /var/www

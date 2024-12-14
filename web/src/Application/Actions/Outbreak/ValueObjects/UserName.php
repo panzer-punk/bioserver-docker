@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Login\ValueObjects;
+namespace App\Application\Actions\Outbreak\ValueObjects;
 
-use App\Domain\Login\UserNameValidatorInterface;
+use App\Domain\Outbreak\UserNameValidatorInterface;
 use InvalidArgumentException;
 
 final class UserName

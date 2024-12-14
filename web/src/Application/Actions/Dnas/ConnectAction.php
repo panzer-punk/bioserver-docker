@@ -7,12 +7,8 @@ namespace App\Application\Actions\Dnas;
 use App\Application\Actions\Action;
 use App\Application\Actions\Dnas\Connectors\OthersConnector;
 use App\Application\Actions\Dnas\Connectors\RegularConnector;
-use Exception;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Response;
-use Slim\Psr7\Stream;
 
 class ConnectAction extends Action
 {

@@ -19,6 +19,7 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
         - APP_PRODUCTION_BUILD=${APP_PRODUCTION_BUILD}
+        - FORCE_COMPOSER_INSTALL=${FORCE_COMPOSER_INSTALL}
     env_file:
       - .env
     depends_on:
