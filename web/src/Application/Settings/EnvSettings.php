@@ -11,10 +11,13 @@ use Monolog\Logger;
 class EnvSettings implements SettingsInterface
 {
     private array $settings;
+    private array $aliases = [
+        "PRODUCTION" => "APP_PRODUCTION_BUILD"
+    ];
 
     public function __construct()
     {
-        $production = filter_var($_ENV["PRODUCTION"] ?? false, FILTER_VALIDATE_BOOL);
+        $production = filter_var($_ENV["APP_PRODUCTION_BUILD"] ?? false, FILTER_VALIDATE_BOOL);
 
         $this->settings = [
             "version"             => "2.0.0-beta",
@@ -41,6 +44,8 @@ class EnvSettings implements SettingsInterface
      */
     public function get(string $key = '')
     {
+        $key = isset($this->aliases[$key]) ? $this->aliases[$key] : $key;
+
         if (! isset($this->settings[$key])) {
             throw new Exception("Unknown setting $key.");
         }
