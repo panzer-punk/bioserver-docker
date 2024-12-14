@@ -14,7 +14,9 @@ final class ViewCRSTopAction extends Action
 
     protected function action(): ResponseInterface
     {
+        $gameID = $this->resolveArg("gameID");
+
         return Twig::fromRequest($this->request)
-            ->render($this->response, self::CRS_TOP_VIEW);
+            ->render($this->response, self::CRS_TOP_VIEW, ["gameID" => $gameID]);
     }
 }

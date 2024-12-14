@@ -44,6 +44,9 @@ final class LoginAction extends Action
         $handler    = $this->handler($data["login"]);
         $twig       = Twig::fromRequest($this->request);
 
+        $loginUrl  = "/{$gameID}/login";
+        $crsTopUrl = "/{$gameID}/CRS-top.jsp";
+
         $usernameValue = $data["username"] ?? "";
         $passwordValue = $data["password"] ?? "";
 
@@ -99,7 +102,7 @@ final class LoginAction extends Action
                 self::LOGIN_FAILED_VIEW,
                 [
                     "message" => $e->getMessage(),
-                    "url"     => "CRS-top.jsp"
+                    "url"     => $crsTopUrl
                 ]
             );
         } catch (DomainException $e) {
@@ -110,7 +113,7 @@ final class LoginAction extends Action
                 self::LOGIN_FAILED_VIEW,
                 [
                     "message" => $e->getMessage(),
-                    "url"     => "login"
+                    "url"     => $loginUrl
                 ]
             );
         } catch (Exception $e) {
@@ -121,7 +124,7 @@ final class LoginAction extends Action
                 self::LOGIN_FAILED_VIEW,
                 [
                     "message" => "Unknown error.",
-                    "url"     => "login"
+                    "url"     => $loginUrl
                 ]
             );
         }

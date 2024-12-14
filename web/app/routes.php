@@ -23,7 +23,7 @@ return function (App $app) {
     );
 
     $app->group("/{gameID:{$gameIDs}}", function (Group $group) {
-        $group->post("/login", LoginAction::class);
+        $group->post("/login-form", LoginAction::class);
         $group->get("/login", ViewLoginAction::class);
         $group->get("/startsession", StartSessionAction::class);
         $group->any("/CRS-top.jsp", ViewCRSTopAction::class);
