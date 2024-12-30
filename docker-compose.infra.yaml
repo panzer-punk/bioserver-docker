@@ -1,5 +1,6 @@
 services:
   biogateway:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/gateway.Dockerfile
@@ -12,6 +13,7 @@ services:
       - bio-network
 
   biofpm:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/fpm.Dockerfile
@@ -19,7 +21,6 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
         - APP_PRODUCTION_BUILD=${APP_PRODUCTION_BUILD}
-        - FORCE_COMPOSER_INSTALL=${FORCE_COMPOSER_INSTALL}
     env_file:
       - .env
     depends_on:
@@ -28,6 +29,7 @@ services:
       - bio-network
 
   biomysql:
+    restart: unless-stopped
     image: mysql:9.0
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -44,6 +46,7 @@ services:
       - ./dbdata:/var/lib/mysql
 
   biodns:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/dns.Dockerfile

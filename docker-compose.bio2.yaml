@@ -1,5 +1,6 @@
 services:
   bio2server:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/server.Dockerfile
