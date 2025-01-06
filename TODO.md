@@ -20,6 +20,11 @@
     - [ ] Black list
     - [ ] Statistics ?
     - [ ] RetroAchivents integration ?
+  - [ ] Community
+    - [ ] Guides editor
+  - [ ] Pages
+   - [ ] Main page
+   - [ ] How to connect page
 
 ## Configuration Management
 
