@@ -25,12 +25,12 @@ final class LoginHandler implements LoginHandlerInterface
         $stmnt->bind_param("ss", $userid, $passwd);
         $stmnt->execute();
         
-        $row = $stmnt->get_result();
+        $res = $stmnt->get_result();
 
-        if ($row !== false && $row->num_rows > 0) {
-            $res = $row->fetch_array(MYSQLI_ASSOC);
+        if ($res !== false && $res->num_rows > 0) {
+            $row = $res->fetch_array(MYSQLI_ASSOC);
 
-            if (!isset($res["cnt"]) || $res["cnt"] != 1) {
+            if (!isset($row["cnt"]) || $row["cnt"] != 1) {
                 throw new LoginException("Login failed. Your login/password combination is wrong.");
             }
         }
