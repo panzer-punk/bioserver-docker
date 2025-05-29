@@ -14,9 +14,7 @@ final class LoginHandler implements LoginHandlerInterface
 {
     public function __construct(
         private mysqli $mysql
-    ) {
-        
-    }
+    ) { }
 
     public function handle(UserName $username, Password $password): void
     {
@@ -27,11 +25,14 @@ final class LoginHandler implements LoginHandlerInterface
         $stmnt->bind_param("ss", $userid, $passwd);
         $stmnt->execute();
         
-        $row = $stmnt->get_result()
-            ->fetch_array(MYSQLI_ASSOC);
+        $row = $stmnt->get_result();
 
-        if ($row["cnt"] != 1) {
-            throw new LoginException("Login failed. Your login/password combination is wrong.");
+        if ($row !== false && $row->num_rows > 0) {
+            $res = $row->fetch_array(MYSQLI_ASSOC);
+
+            if (!isset($res["cnt"]) || $res["cnt"] != 1) {
+                throw new LoginException("Login failed. Your login/password combination is wrong.");
+            }
         }
     }
 }
