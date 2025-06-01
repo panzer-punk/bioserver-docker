@@ -30,5 +30,5 @@
 
 - [ ] Game server
   - [ ] Port management
-- [ ] Web server
+- [x] Web server
   - [x] App environment setup (production, local)
