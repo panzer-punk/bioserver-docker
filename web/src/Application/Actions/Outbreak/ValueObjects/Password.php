@@ -16,7 +16,7 @@ final class Password
         PasswordValidatorInterface $validator
     ) {
         if (! $validator->valid($value)) {
-            throw new InvalidArgumentException("Password doesn't match criteria.");
+            throw new InvalidArgumentException("Password does not match criteria.");
         }
 
         $this->value = md5($value);

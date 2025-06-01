@@ -34,6 +34,6 @@ final class ProductionPasswordValidator implements PasswordValidatorInterface
 
     public function criteria(): string
     {
-        return "Password must be at least</br>6 characters long, must contain letters in mixed case and must contain numbers.";
+        return "Must be at least 6 characters long, must contain letters in mixed case and must contain numbers.";
     }
 }

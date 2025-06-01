@@ -16,7 +16,7 @@ final class UserName
         UserNameValidatorInterface $validator
     ) {
         if (! $validator->valid($value)) {
-            throw new InvalidArgumentException("Username doesn't match criteria.");
+            throw new InvalidArgumentException("Username does not match criteria.");
         }
 
         $this->value = mb_strtolower($value);
