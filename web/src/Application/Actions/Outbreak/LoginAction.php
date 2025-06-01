@@ -158,10 +158,13 @@ final class LoginAction extends Action
                     $gameID
                 )
             );
-            $row = $res->fetch_array(MYSQLI_ASSOC);
 
-            if($row["cnt"] == 0) {
-                return $sessid;
+            if ($res !== false && $res->num_rows > 0) {
+                $row = $res->fetch_array(MYSQLI_ASSOC);
+
+                if(isset($row["cnt"]) && $row["cnt"] == 0) {
+                    return $sessid;
+                }
             }
         }
     }
