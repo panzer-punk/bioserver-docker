@@ -32,7 +32,8 @@ import java.util.logging.Logger;
 public class ServerMain {
     // the server listens on this port
     public final static int LOBBYPORT = 8200;
-    public final static int GAMEPORT = 8590;	// if you change this, search for gs_info
+    public final static int GAMEPORT  = 8590;	// if you change this, search for gs_info
+    public final static String GAMEID = "00000010";
     
     // Entry point
     public static void main(String[] args) {
@@ -67,9 +68,6 @@ public class ServerMain {
         System.out.println("------------------------------\n"+
                            "-     fanmade server for     -\n"+
                            "- Biohazard Outbreak File #2 -\n"+
-                           "-                            -\n"+
-                           "- (c) 2013-2019 obsrv.org    -\n"+
-                           "-        no23@deathless.net  -\n"+
                            "------------------------------\n");
 
         Date date = new Date();

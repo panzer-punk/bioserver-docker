@@ -1,8 +1,9 @@
 services:
-  bioapache:
+  biogateway:
+    restart: unless-stopped
     build: 
       context: .
-      dockerfile: docker/apache.Dockerfile
+      dockerfile: docker/gateway.Dockerfile
     ports:
       - "80:80"
       - "443:443"
@@ -12,15 +13,14 @@ services:
       - bio-network
 
   biofpm:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/fpm.Dockerfile
       args:
-        - MYSQL_ROOT_PASSWORD=root
-        - DB_USER=${DB_USER}
-        - DB_PASSWORD=${DB_PASSWORD}
-        - BIO1_DB_DATABASE=${BIO1_DB_DATABASE}
-        - BIO2_DB_DATABASE=${BIO2_DB_DATABASE}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+        - APP_PRODUCTION_BUILD=${APP_PRODUCTION_BUILD}
     env_file:
       - .env
     depends_on:
@@ -29,24 +29,24 @@ services:
       - bio-network
 
   biomysql:
-    image: mysql:5.7
+    restart: unless-stopped
+    image: mysql:9.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      BIO1_DB_DATABASE: ${BIO1_DB_DATABASE}
-      BIO2_DB_DATABASE: ${BIO2_DB_DATABASE}
+      DB_DATABASE: ${DB_DATABASE}
     networks:
       - bio-network
     env_file:
       - .env
     volumes:
       - ./docker/vars/mysql/1_create_user.sh:/docker-entrypoint-initdb.d/1_create_user.sh
-      - ./docker/vars/mysql/2_init_b1_db.sh:/docker-entrypoint-initdb.d/2_init_b1_db.sh
-      - ./docker/vars/mysql/2_init_b2_db.sh:/docker-entrypoint-initdb.d/2_init_b2_db.sh
+      - ./docker/vars/mysql/2_init_db.sh:/docker-entrypoint-initdb.d/2_init_db.sh
       - ./dbdata:/var/lib/mysql
 
   biodns:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/dns.Dockerfile

@@ -41,9 +41,6 @@ public class Configuration {
 
     // constructor
     public Configuration() {
-        InputStream inputStream = null;
-        String propFileName = "config.properties";
-
         this.gs_ip       = System.getenv("SERVER_IP");
         this.db_user     = System.getenv("DB_USER");
         this.db_password = System.getenv("DB_PASSWORD");

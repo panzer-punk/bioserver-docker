@@ -1,1 +1,0 @@
-<html><head><meta http-equiv="Refresh" content="1; url=login.php"></head></html>

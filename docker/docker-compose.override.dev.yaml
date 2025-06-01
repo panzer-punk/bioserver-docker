@@ -1,0 +1,4 @@
+services:
+  biofpm:
+    volumes:
+      - ./web:/var/www:rw

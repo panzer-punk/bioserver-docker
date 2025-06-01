@@ -1,4 +1,0 @@
-- The content of this folder must be served by a webserver.
-- DNS of https://www01.kddi-mmbb.jp/00000002/ must be redirected to this folder.
-- Keep an eye on the used SSL-ciphers, most of them are weak and you should harden your webserver
-- using a self-signed certificate works

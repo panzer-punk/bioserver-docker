@@ -1,5 +1,6 @@
 services:
   bio1server:
+    restart: unless-stopped
     build: 
       context: .
       dockerfile: docker/server.Dockerfile
@@ -10,9 +11,9 @@ services:
       - SERVER_IP=${SERVER_IP}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=biomysql
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_HOST=${DB_HOST}
       - JAVA_DB_PARAMS=${JAVA_DB_PARAMS}
-      - DB_DATABASE=${BIO1_DB_DATABASE}
     env_file:
       - .env
     ports:
