@@ -23,7 +23,7 @@ RUN mkdir -p bin/bioserver \
     && mkdir lib \
     && cp /usr/share/java/mysql-connector-j-8.0.32.jar lib/mysql-connector.jar
 
-CMD [ "sh", "-c", "/var/www/run.sh" ]
+ENTRYPOINT [ "sh", "-c", "/var/www/run.sh" ]
 
 
 

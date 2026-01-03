@@ -12,6 +12,7 @@ init:
 	cp .env.example .env
 	sed -i "s/GID=1000/GID=${GID}/" .env
 	sed -i "s/UID=1000/UID=${UID}/" .env
+	${DOCKER_BIN} compose -f docker-compose.infra.yaml pull biomysql
 
 build:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} build 

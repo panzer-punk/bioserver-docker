@@ -1,4 +1,5 @@
 #/bin/sh
+set -e
 
 if test "" != "x" ; then
     LD_LIBRARY_PATH="/opt/apache/lib:$LD_LIBRARY_PATH"

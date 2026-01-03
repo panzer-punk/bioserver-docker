@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 if [ -e ./bioserver/patch.raw ]
     then 
         mv ./bioserver/patch.raw .
