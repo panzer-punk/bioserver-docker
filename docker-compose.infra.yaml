@@ -50,9 +50,9 @@ services:
     build: 
       context: .
       dockerfile: docker/dns.Dockerfile
-      args:
-        - SERVER_IP=${SERVER_IP}
-        - ROUTER_IP=${ROUTER_IP}
+    environment:
+      SERVER_IP: ${SERVER_IP}
+      ROUTER_IP: ${ROUTER_IP}
     ports:
       - "53:53/udp"
     cap_add:

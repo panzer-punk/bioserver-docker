@@ -1,11 +1,8 @@
 FROM strm/dnsmasq
 
-ARG SERVER_IP
-ARG ROUTER_IP
+RUN apk add --no-cache gettext
 
-COPY docker/vars/dns/dnsmasq.conf /etc/dnsmasq.conf
+COPY docker/vars/dns/dnsmasq.conf /etc/dnsmasq.template.conf
+COPY --chmod=754 docker/vars/dns/entrypoint.sh /var/entrypoint.sh
 
-RUN sed -i "s/{{SERVER_IP}}/${SERVER_IP}/g" /etc/dnsmasq.conf 
-RUN sed -i "s/{{ROUTER_IP}}/${ROUTER_IP}/g" /etc/dnsmasq.conf
-
-ENTRYPOINT [ "dnsmasq", "-k" ]
+ENTRYPOINT [ "/var/entrypoint.sh" ]
