@@ -61,4 +61,4 @@ WORKDIR /var/www
 COPY ./docker/vars/gateway/httpd.conf /opt/gateway/conf/httpd.conf
 COPY --chmod=754 ./docker/vars/gateway/start.sh /var/www/
 
-CMD [ "sh", "-c", "/var/www/start.sh" ]
+ENTRYPOINT [ "sh", "-c", "/var/www/start.sh" ]

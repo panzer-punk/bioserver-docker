@@ -30,4 +30,4 @@ RUN if [ $APP_PRODUCTION_BUILD = true ]; then composer install --no-interaction 
 USER www-data
 EXPOSE 9000
 
-CMD [ "php-fpm" ]
+ENTRYPOINT [ "php-fpm" ]
