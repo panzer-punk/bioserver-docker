@@ -8,7 +8,6 @@ use App\Domain\Outbreak\ValueObjects\Password;
 use App\Domain\Outbreak\ValueObjects\UserName;
 use App\Domain\Outbreak\LoginException;
 use App\Domain\Outbreak\LoginHandlerInterface;
-use App\Domain\User\User;
 use mysqli;
 
 final class RegisterHandler implements LoginHandlerInterface
