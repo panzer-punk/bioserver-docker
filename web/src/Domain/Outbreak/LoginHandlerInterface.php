@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Outbreak;
 
-use App\Application\Actions\Outbreak\ValueObjects\Password;
-use App\Application\Actions\Outbreak\ValueObjects\UserName;
+use App\Domain\Outbreak\ValueObjects\Password;
+use App\Domain\Outbreak\ValueObjects\UserName;
 
 interface LoginHandlerInterface
 {
