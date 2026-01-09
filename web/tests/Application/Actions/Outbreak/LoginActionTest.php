@@ -11,21 +11,13 @@ use App\Domain\Outbreak\UserNameValidatorInterface;
 use App\Domain\Outbreak\ValueObjects\Password;
 use App\Domain\Outbreak\ValueObjects\UserName;
 use mysqli;
-use Slim\App;
+use Psr\Http\Message\ResponseInterface;
+use Tests\Application\Actions\Outbreak\Traits\HasGameIDDataProvider;
 use Tests\TestCase;
 
 class LoginActionTest extends TestCase
 {
-    private static App $app;
-
-    private static function getApp(): App
-    {
-        if (empty(self::$app)) {
-            self::$app = (new self)->getAppInstance();
-        }
-
-        return self::$app;
-    }
+    use HasGameIDDataProvider;
 
     private static function createUser(string $username, ?string $password = null): void
     {
@@ -113,8 +105,7 @@ class LoginActionTest extends TestCase
 
         foreach ($credentials as $name => $data) {
             foreach (GameID::cases() as $case) {
-                $caseVal = $case->value;
-                $resName = "{$name}_{$caseVal}";
+                $resName = "{$name}_{$case->name}";
                 $data["gameID"] = $case;
                 $res[$resName] = $data;
             }
@@ -151,7 +142,7 @@ class LoginActionTest extends TestCase
         string $loginType,
         int $expectedStatus,
         ?string $expectedMessage
-    ): void {
+    ): ResponseInterface {
         $app = self::getApp();
 
         $request = $this->createRequest(
@@ -169,8 +160,7 @@ class LoginActionTest extends TestCase
             "password" => $password,
             "username" => $username,
             "login" => $loginType
-        ])
-        ->withHeader("Content-Type", "application/x-www-form-urlencoded");
+        ])->withHeader("Content-Type", "application/x-www-form-urlencoded");
 
         $response = $app->handle($request);
 
@@ -179,6 +169,8 @@ class LoginActionTest extends TestCase
         if (!empty($expectedMessage)) {
             $this->assertStringContainsString($expectedMessage, (string) $response->getBody());
         }
+
+        return $response;
     }
 
     /**
@@ -193,5 +185,61 @@ class LoginActionTest extends TestCase
         GameID $gameID,
     ): void {
         $this->performLoginFormRequest($username, $password, $gameID, 'newaccount', $status, $message);
+    }
+
+    /**
+     * @dataProvider gameIDDataProvider
+     *
+     * @param GameID $gameID
+     * @return void
+     */
+    public function testLoginSuccess(GameID $gameID): void
+    {
+        $username = $gameID->value;
+        $password = "p4ssworD";
+        self::createUser($username, $password);
+
+        $response = $this->performLoginFormRequest(
+            $username,
+            $password,
+            $gameID,
+            "manual",
+            200,
+            "Login successful."
+        );
+
+        /**@var mysqli $mysql */
+        $mysql = self::getApp()->getContainer()->get(mysqli::class);
+        $sessions = $mysql->execute_query("select * from sessions where userid = ?", [$username])->fetch_all(MYSQLI_ASSOC);
+        $sessid = $sessions[0]["sessid"];
+
+        $this->assertEquals(1, count($sessions));
+        $this->assertEquals($gameID->value, $sessions[0]["gameid"]);
+        $this->assertStringContainsString("<a href=\"startsession?sessid={$sessid}\">Enter lobbies</a>", (string) $response->getBody());
+    }
+
+    /**
+     * @dataProvider gameIDDataProvider
+     * 
+     * @param GameID $gameID
+     * @return void
+     */
+    public function testViewLoginActionSuccess(GameID $gameID)
+    {
+        $request = $this->createRequest(
+            "GET",
+            "/{$gameID->value}/login"
+        );
+        /**@var PasswordValidatorInterface $passwordValidator */
+        $passwordValidator = self::getApp()->getContainer()->get(PasswordValidatorInterface::class);
+        /**@var UserNameValidatorInterface $usernameValidator */
+        $usernameValidator = self::getApp()->getContainer()->get(UserNameValidatorInterface::class);
+
+        $response = self::getApp()->handle($request);
+        $body = (string) $response->getBody();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertStringContainsString($passwordValidator->criteria(),$body);
+        $this->assertStringContainsString($usernameValidator->criteria(), $body);
     }
 }

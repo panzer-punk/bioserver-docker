@@ -30,6 +30,17 @@ class TestCase extends PHPUnit_TestCase
      */
     private array $databaseConnections = [];
 
+    private static App $app;
+
+    protected static function getApp(): App
+    {
+        if (empty(self::$app)) {
+            self::$app = (new self)->getAppInstance();
+        }
+
+        return self::$app;
+    }
+
     /**
      * Set up test environment - start database transaction
      */
