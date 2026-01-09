@@ -21,7 +21,7 @@ final class RegisterHandler implements LoginHandlerInterface
     public function handle(UserName $username, Password $password): void
     {
         $userid = $username->value;
-        $passwd = $password->value; 
+        $passwd = $password->value;
 
         $stmnt = $this->mysql->prepare("insert into users (userid, passwd) values (?, ?)");
         $stmnt->bind_param("ss", $userid, $passwd);
