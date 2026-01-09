@@ -224,7 +224,7 @@ class LoginActionTest extends TestCase
      * @param GameID $gameID
      * @return void
      */
-    public function testViewLoginActionSuccess(GameID $gameID)
+    public function testViewLoginActionSuccess(GameID $gameID): void
     {
         $request = $this->createRequest(
             "GET",
