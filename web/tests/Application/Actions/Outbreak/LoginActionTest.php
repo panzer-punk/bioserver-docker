@@ -6,6 +6,7 @@ namespace Tests\Application\Actions\Outbreak;
 
 use App\Application\Actions\Outbreak\Handlers\RegisterHandler;
 use App\Domain\GameID;
+use App\Domain\Outbreak\OutbreakLoginAction;
 use App\Domain\Outbreak\PasswordValidatorInterface;
 use App\Domain\Outbreak\UserNameValidatorInterface;
 use App\Domain\Outbreak\ValueObjects\Password;
@@ -132,14 +133,14 @@ class LoginActionTest extends TestCase
         ?string $message,
         GameID $gameID,
     ): void {
-        $this->performLoginFormRequest($username, $password, $gameID, 'manual', $status, $message);
+        $this->performLoginFormRequest($username, $password, $gameID, OutbreakLoginAction::Manual, $status, $message);
     }
 
     private function performLoginFormRequest(
         string $username,
         string $password,
         GameID $gameID,
-        string $loginType,
+        OutbreakLoginAction $loginType,
         int $expectedStatus,
         ?string $expectedMessage
     ): ResponseInterface {
@@ -159,7 +160,7 @@ class LoginActionTest extends TestCase
         $request = $request->withParsedBody([
             "password" => $password,
             "username" => $username,
-            "login" => $loginType
+            "login" => $loginType->value
         ])->withHeader("Content-Type", "application/x-www-form-urlencoded");
 
         $response = $app->handle($request);
@@ -184,7 +185,7 @@ class LoginActionTest extends TestCase
         ?string $message,
         GameID $gameID,
     ): void {
-        $this->performLoginFormRequest($username, $password, $gameID, 'newaccount', $status, $message);
+        $this->performLoginFormRequest($username, $password, $gameID, OutbreakLoginAction::Manual, $status, $message);
     }
 
     /**
@@ -203,7 +204,7 @@ class LoginActionTest extends TestCase
             $username,
             $password,
             $gameID,
-            "manual",
+            OutbreakLoginAction::Manual,
             200,
             "Login successful."
         );
