@@ -9,7 +9,6 @@ use App\Application\Actions\Dnas\Connectors\OthersConnector;
 use App\Application\Actions\Dnas\Connectors\RegularConnector;
 use App\Domain\Dnas\Connector;
 use App\Domain\Dnas\DnasConnectAction;
-use InvalidArgumentException;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
