@@ -21,7 +21,10 @@ composer-install:
 	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run biofpm composer install
 
 test:
-	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run --rm biofpm composer test 
+	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run --rm biofpm composer test
+
+stan:
+	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run --rm biofpm composer stan
 
 run: disable-systemd-resolved
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} up
