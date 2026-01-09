@@ -10,7 +10,6 @@ use App\Domain\Outbreak\PasswordValidatorInterface;
 use App\Domain\Outbreak\UserNameValidatorInterface;
 use App\Domain\Outbreak\ValueObjects\Password;
 use App\Domain\Outbreak\ValueObjects\UserName;
-use Exception;
 use mysqli;
 use Slim\App;
 use Tests\TestCase;
