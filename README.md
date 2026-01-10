@@ -29,3 +29,9 @@ To make changes to the code without rebuilding, follow these steps:
 1. Set APP_PRODUCTION_BUILD variable to false in .env (APP_PRODUCTION_BUILD=false)
 2. Override biofpm volume by `cp docker/docker-compose.override.dev.yaml docker-compose.override.yaml`
 3. Install composer dependecies `make composer-install`
+
+#### Testing
+
+For running tests, there are two commands available:
+- `make test` - runs PHPUnit tests
+- `make stan` - runs PHPStan static analysis
