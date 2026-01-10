@@ -7,6 +7,8 @@ namespace App\Application\Actions\Dnas;
 use App\Application\Actions\Action;
 use App\Application\Actions\Dnas\Connectors\OthersConnector;
 use App\Application\Actions\Dnas\Connectors\RegularConnector;
+use App\Domain\Dnas\Connector;
+use App\Domain\Dnas\DnasConnectAction;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
@@ -44,16 +46,16 @@ class ConnectAction extends Action
             ->withStatus(200, "OK");
     }
 
-    private function connector()
+    private function connector(): Connector
     {
-        $action = $this->resolveArg("action");
-        $folder = $this->resolveArg("folder");
+        $action = DnasConnectAction::from((string) $this->resolveArg("action"));
+        $folder = (string) $this->resolveArg("folder");
 
         $path = APP_ROOT . "/storage/dnas/{$folder}";
 
         return match ($action) {
-            "connect" => new RegularConnector($this->logger, $path),
-            "others"  => new OthersConnector($this->logger, $path)
+            DnasConnectAction::Connect => new RegularConnector($this->logger, $path),
+            DnasConnectAction::Others  => new OthersConnector($this->logger, $path),
         };
     }
 }

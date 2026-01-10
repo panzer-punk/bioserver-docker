@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests;
 
 use DI\ContainerBuilder;
-use Exception;
 use PHPUnit\Framework\TestCase as PHPUnit_TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -15,10 +14,56 @@ use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
 use Slim\Psr7\Uri;
+use mysqli;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
 class TestCase extends PHPUnit_TestCase
 {
     use ProphecyTrait;
+
+    /**
+     * @var mysqli[]
+     */
+    private array $databaseConnections = [];
+
+    private static App $app;
+
+    protected static function getApp(): App
+    {
+        if (empty(self::$app)) {
+            self::$app = (new self)->getAppInstance();
+        }
+
+        return self::$app;
+    }
+
+    /**
+     * Set up test environment - start database transaction
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->databaseConnections = [];
+    }
+
+    /**
+     * Tear down test environment - rollback database transaction
+     */
+    protected function tearDown(): void
+    {
+        foreach ($this->databaseConnections as $connection) {
+            if ($connection && !$connection->connect_errno) {
+                $connection->rollback();
+                $connection->autocommit(true);
+            }
+        }
+        $this->databaseConnections = [];
+        parent::tearDown();
+    }
 
     /**
      * @return App
@@ -43,8 +88,24 @@ class TestCase extends PHPUnit_TestCase
         $repositories = require __DIR__ . '/../app/repositories.php';
         $repositories($containerBuilder);
 
+        $containerBuilder->addDefinitions([
+            LoggerInterface::class => function (ContainerInterface $c) {
+                return new NullLogger;
+            }
+        ]);
+
         // Build PHP-DI Container instance
         $container = $containerBuilder->build();
+
+        // Add Twig
+        $twig = Twig::create(__DIR__ . "/../views", ["cache" => false]);
+
+        // Start database transaction for test isolation
+        $mysql = $container->get(mysqli::class);
+        if ($mysql && !$mysql->connect_errno) {
+            $mysql->autocommit(false);
+            $this->databaseConnections[] = $mysql;
+        }
 
         // Instantiate the app
         AppFactory::setContainer($container);
@@ -57,6 +118,8 @@ class TestCase extends PHPUnit_TestCase
         // Register routes
         $routes = require __DIR__ . '/../app/routes.php';
         $routes($app);
+
+        $app->add(TwigMiddleware::create($app, $twig));
 
         return $app;
     }

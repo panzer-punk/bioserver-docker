@@ -14,6 +14,10 @@
     stopOnFailure="false"
     bootstrap="tests/bootstrap.php"
 >
+    <php>
+        <env name="APP_PRODUCTION_BUILD" value="true" force="true"/>
+        <env name="FORCE_DEV_LOGIN" value="false" force="true"/>
+    </php>
     <testsuites>
         <testsuite name="Test Suite">
             <directory>./tests/</directory>

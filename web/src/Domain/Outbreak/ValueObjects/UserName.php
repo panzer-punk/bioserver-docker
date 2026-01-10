@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Outbreak\ValueObjects;
+namespace App\Domain\Outbreak\ValueObjects;
 
 use App\Domain\Outbreak\UserNameValidatorInterface;
 use InvalidArgumentException;
@@ -22,3 +22,4 @@ final class UserName
         $this->value = mb_strtolower($value);
     }
 }
+

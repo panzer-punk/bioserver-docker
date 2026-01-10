@@ -8,13 +8,19 @@ use App\Application\Actions\Outbreak\LoginAction;
 use App\Application\Actions\Outbreak\StartSessionAction;
 use App\Application\Actions\Outbreak\ViewCRSTopAction;
 use App\Application\Actions\Outbreak\ViewLoginAction;
+use App\Domain\Dnas\DnasConnectAction;
 use App\Domain\GameID;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
     $app->group('/dnas', function (Group $group) {
-        $group->post("/{folder}/{action:connect|others}", ConnectAction::class);
+        $actions = implode(
+            "|",
+            array_column(DnasConnectAction::cases(), "value")
+        );
+
+        $group->post("/{folder}/{action:{$actions}}", ConnectAction::class);
     });
 
     $gameIDs = implode(

@@ -7,8 +7,9 @@ namespace App\Application\Actions\Outbreak;
 use App\Application\Actions\Action;
 use App\Application\Actions\Outbreak\Handlers\LoginHandler;
 use App\Application\Actions\Outbreak\Handlers\RegisterHandler;
-use App\Application\Actions\Outbreak\ValueObjects\Password;
-use App\Application\Actions\Outbreak\ValueObjects\UserName;
+use App\Domain\Outbreak\OutbreakLoginAction;
+use App\Domain\Outbreak\ValueObjects\Password;
+use App\Domain\Outbreak\ValueObjects\UserName;
 use App\Domain\Outbreak\LoginException;
 use App\Domain\Outbreak\LoginHandlerInterface;
 use App\Domain\Outbreak\PasswordValidatorInterface;
@@ -41,7 +42,7 @@ final class LoginAction extends Action
         $gameID     = $this->resolveArg("gameID");
         $data       = $this->getFormData();
         $serverData = $this->request->getServerParams();
-        $handler    = $this->handler($data["login"]);
+        $handler    = $this->handler((string) $data["login"]);
         $twig       = Twig::fromRequest($this->request);
 
         $loginUrl  = "/{$gameID}/login";
@@ -140,9 +141,11 @@ final class LoginAction extends Action
 
     private function handler(string $action): LoginHandlerInterface
     {
+        $action = OutbreakLoginAction::from($action);
+
         return match ($action) {
-            "newaccount" => new RegisterHandler($this->mysql),
-            "manual"     => new LoginHandler($this->mysql)
+            OutbreakLoginAction::NewAccount => new RegisterHandler($this->mysql),
+            OutbreakLoginAction::Manual => new LoginHandler($this->mysql)
         };
     }
 
