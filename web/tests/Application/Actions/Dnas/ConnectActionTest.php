@@ -37,6 +37,19 @@ class ConnectActionTest extends TestCase
                 "response" => "response_gai-gw_others_011880060008498c_170bytes_success.bin",
                 "folder" => "gai-gw",
                 "action" => DnasConnectAction::Others->value,
+            ],
+            "regular_gai-gw_success_{$bio2}" => [
+                // same prefix with bio1
+                "packet" => "request_gai-gw_regular_0118000000000000_bio2_308bytes_success.bin",
+                "response" => "response_gai-gw_regular_0118000500034a4d_328bytes_success.bin",
+                "folder" => "gai-gw",
+                "action" => DnasConnectAction::Connect->value,
+            ],
+            "others_gat-gw_success_{$bio2}" => [
+                "packet" => "request_gai-gw_others_0118800100034a4d_184bytes_success.bin",
+                "response" => "response_gai-gw_others_0118800600034a4d_170bytes_success.bin",
+                "folder" => "gai-gw",
+                "action" => DnasConnectAction::Others->value
             ]
         ];
     }
@@ -48,7 +61,7 @@ class ConnectActionTest extends TestCase
      * @param string $responseFile
      * @return void
      */
-    public function testConnectActionSuccess(
+    public function testConnectAction(
         string $packetFile,
         string $responseFile,
         string $folder,
