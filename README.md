@@ -32,6 +32,9 @@ To make changes to the code without rebuilding, follow these steps:
 
 #### Testing
 
+**IMPORTANT:** Before running tests, make sure to start the biomysql container, otherwise you may encounter database connection errors on first run.<br>
+You can start it with: `docker compose -f docker-compose.infra.yaml up -d biomysql`
+
 For running tests, there are two commands available:
 - `make test` - runs PHPUnit tests
 - `make stan` - runs PHPStan static analysis
