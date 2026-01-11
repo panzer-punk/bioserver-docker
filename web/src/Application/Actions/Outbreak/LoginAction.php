@@ -68,11 +68,19 @@ final class LoginAction extends Action
             $password = new Password($passwordValue, $this->passwordValidator);
             $userid   = $username->value;
 
-            $this->logger->log(Logger::DEBUG, "Game {$gameID} login attempt, username {$username->value}", ["ip" => $ip]);
+            $this->logger->log(
+                Logger::DEBUG,
+                "Game {$gameID} login attempt, username {$username->value}",
+                ["ip" => $ip]
+            );
 
             $handler->handle($username, $password);
 
-            $this->logger->log(Logger::INFO, "Game {$gameID} successful login, username {$username->value}", ["ip" => $ip]);
+            $this->logger->log(
+                Logger::INFO,
+                "Game {$gameID} successful login, username {$username->value}",
+                ["ip" => $ip]
+            );
 
             //drop session for both games
             $stmnt = $this->mysql->prepare("delete from sessions where userid = ?");
@@ -84,7 +92,9 @@ final class LoginAction extends Action
             }
 
             $sessid = $this->sessionID($gameID);
-            $stmnt = $this->mysql->prepare("insert into sessions (userid, ip, port, sessid, lastlogin, gameid) values (?, ?, ?, ?, now(), ?)");
+            $stmnt = $this->mysql->prepare(
+                "insert into sessions (userid, ip, port, sessid, lastlogin, gameid) values (?, ?, ?, ?, now(), ?)"
+            );
             $stmnt->bind_param("ssiss", $userid, $ip, $port, $sessid, $gameID);
             $res = $stmnt->execute();
 
@@ -92,7 +102,10 @@ final class LoginAction extends Action
                 throw new DomainException("Session creation failed.");
             }
 
-            $this->logger->info("Game {$gameID} session {$sessid} created", ["username" => $username->value, "ip" => $ip]);
+            $this->logger->info(
+                "Game {$gameID} session {$sessid} created",
+                ["username" => $username->value, "ip" => $ip]
+            );
         } catch (LoginException | InvalidArgumentException $e) {
             //@todo refactor logs
             $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["ip" => $ip]);
@@ -117,7 +130,14 @@ final class LoginAction extends Action
                 ]
             );
         } catch (Exception $e) {
-            $this->logger->log(Logger::ERROR, "Game {$gameID}: {$e->getMessage()}", ["ip" => $ip, "stack_trace" => $e->getTraceAsString()]);
+            $this->logger->log(
+                Logger::ERROR,
+                "Game {$gameID}: {$e->getMessage()}",
+                [
+                    "ip" => $ip,
+                    "stack_trace" => $e->getTraceAsString()
+                ]
+            );
 
             return $twig->render(
                 $this->response,

@@ -20,7 +20,14 @@ class ConnectAction extends Action
         $packet    = $this->request->getBody()->getContents();
         $connector = $this->connector();
 
-        $this->logger->log(Logger::INFO, "DNAS verification started: {$this->request->getUri()}", ["ip" => $ip, "connector" => $connector::class]);
+        $this->logger->log(
+            Logger::INFO,
+            "DNAS verification started: {$this->request->getUri()}",
+            [
+                "ip" => $ip,
+                "connector" => $connector::class
+            ]
+        );
 
         $res = $connector->connect($packet);
 
