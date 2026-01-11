@@ -16,7 +16,6 @@ final class OthersConnector implements Connector
         private LoggerInterface $logger,
         private string $basePath
     ) {
-        
     }
 
     public function connect(string $packet): ConnectResults
@@ -24,7 +23,7 @@ final class OthersConnector implements Connector
         $basePath = $this->basePath;
         $gameID   = substr($packet, 0x1b, 8);
         $qrytype  = substr($packet, 0, 4);
-        $fname    = bin2hex($gameID)."_".bin2hex($qrytype);
+        $fname    = bin2hex($gameID) . "_" . bin2hex($qrytype);
 
         $packetPath = "{$basePath}/packets/{$fname}";
         $this->logger->log(Logger::INFO, "Reading packet: {$packetPath}");
@@ -38,7 +37,7 @@ final class OthersConnector implements Connector
         }
 
         if ($packet === false) {
-            throw new DnasPacketException;
+            throw new DnasPacketException();
         }
 
         return new ConnectResults("image/gif", strlen($packet), $packet);

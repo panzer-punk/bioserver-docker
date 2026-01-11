@@ -14,7 +14,8 @@ final class LoginHandler implements LoginHandlerInterface
 {
     public function __construct(
         private mysqli $mysql
-    ) { }
+    ) {
+    }
 
     public function handle(UserName $username, Password $password): void
     {
@@ -24,7 +25,7 @@ final class LoginHandler implements LoginHandlerInterface
         $stmnt = $this->mysql->prepare("select count(*) as cnt from users where userid = ? and passwd = ?");
         $stmnt->bind_param("ss", $userid, $passwd);
         $stmnt->execute();
-        
+
         $res = $stmnt->get_result();
 
         if ($res !== false && $res->num_rows > 0) {

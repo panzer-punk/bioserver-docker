@@ -17,7 +17,7 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli && \
 #Installing and setting up DNAS
 WORKDIR /tmp
 
-COPY --from=composer:2.7.8 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.9.3 /usr/bin/composer /usr/local/bin/composer
 COPY --chown=www-data:www-data ./web /var/www
 COPY ./docker/vars/web/yy-log.conf /usr/local/etc/php-fpm.d/00-log.conf
 COPY ./docker/vars/web/openssl.cnf /usr/lib/ssl/openssl.cnf

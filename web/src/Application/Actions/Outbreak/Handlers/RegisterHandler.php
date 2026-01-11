@@ -15,7 +15,6 @@ final class RegisterHandler implements LoginHandlerInterface
     public function __construct(
         private mysqli $mysql
     ) {
-        
     }
 
     public function handle(UserName $username, Password $password): void

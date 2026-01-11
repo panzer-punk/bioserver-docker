@@ -38,9 +38,9 @@ final class ViewLoginAction extends Action
         $gameID = $this->resolveArg("gameID");
 
         return $twig->render(
-                $this->response,
-                self::LOGIN_VIEW,
-                [
+            $this->response,
+            self::LOGIN_VIEW,
+            [
                     "title" => $title,
                     "passwordCriteria" => $this->passwordValidator->criteria(),
                     "usernameCriteria" => $this->usernameValidator->criteria(),
