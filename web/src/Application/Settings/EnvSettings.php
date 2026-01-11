@@ -16,7 +16,7 @@ class EnvSettings implements SettingsInterface
         $production = filter_var($_ENV["APP_PRODUCTION_BUILD"] ?? false, FILTER_VALIDATE_BOOL);
 
         $this->settings = [
-            "version"             => "2.0.0",
+            "version"             => "2.2.0",
             "production"          => $production,
             "force_dev_login"     => filter_var($_ENV["FORCE_DEV_LOGIN"] ?? false, FILTER_VALIDATE_BOOL),
             "displayErrorDetails" => ! $production,
