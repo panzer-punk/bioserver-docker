@@ -93,11 +93,10 @@ final class LoginAction extends Action
             }
 
             $this->logger->info("Game {$gameID} session {$sessid} created", ["username" => $username->value, "ip" => $ip]);
-
-        } catch (LoginException|InvalidArgumentException $e) {
+        } catch (LoginException | InvalidArgumentException $e) {
             //@todo refactor logs
             $this->logger->log(Logger::ERROR, "Game {$gameID} login failed: {$e->getMessage()}", ["ip" => $ip]);
-            
+
             return $twig->render(
                 $this->response,
                 self::LOGIN_FAILED_VIEW,
@@ -152,12 +151,12 @@ final class LoginAction extends Action
     private function sessionID(string $gameID): int
     {
         while (true) {
-            $sessid = mt_rand(10000000,99999999);
+            $sessid = mt_rand(10000000, 99999999);
 
             $res = $this->mysql->query(
                 sprintf(
-                    "select count(*) as cnt from sessions where sessid = %s and gameid = %s", 
-                    $sessid, 
+                    "select count(*) as cnt from sessions where sessid = %s and gameid = %s",
+                    $sessid,
                     $gameID
                 )
             );
@@ -165,7 +164,7 @@ final class LoginAction extends Action
             if ($res !== false && $res->num_rows > 0) {
                 $row = $res->fetch_array(MYSQLI_ASSOC);
 
-                if(isset($row["cnt"]) && $row["cnt"] == 0) {
+                if (isset($row["cnt"]) && $row["cnt"] == 0) {
                     return $sessid;
                 }
             }

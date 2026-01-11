@@ -22,4 +22,3 @@ final class Password
         $this->value = md5($value);
     }
 }
-

@@ -7,7 +7,6 @@ namespace App\Application\Settings;
 use Exception;
 use Monolog\Logger;
 
-
 class EnvSettings implements SettingsInterface
 {
     private array $settings;

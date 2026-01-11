@@ -9,6 +9,5 @@ final readonly class ConnectResults
         public int $contentLength,
         public mixed $content
     ) {
-        
     }
 }

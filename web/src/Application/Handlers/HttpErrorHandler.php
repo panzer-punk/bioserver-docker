@@ -60,7 +60,7 @@ class HttpErrorHandler extends SlimErrorHandler
 
         return Twig::fromRequest($this->request)
             ->render(
-                $this->responseFactory->createResponse($statusCode), 
+                $this->responseFactory->createResponse($statusCode),
                 "/error/error.html.twig",
                 [
                     "statusCode"   => $statusCode,

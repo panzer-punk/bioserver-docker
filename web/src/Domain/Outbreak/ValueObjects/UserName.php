@@ -22,4 +22,3 @@ final class UserName
         $this->value = mb_strtolower($value);
     }
 }
-
