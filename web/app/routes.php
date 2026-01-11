@@ -24,7 +24,7 @@ return function (App $app) {
     });
 
     $gameIDs = implode(
-        "|", 
+        "|",
         array_column(GameID::cases(), "value")
     );
 

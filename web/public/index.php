@@ -21,7 +21,7 @@ $containerBuilder = new ContainerBuilder();
 
 //@todo Rewrite REQUEST_URI in Apache level
 if (! empty($_SERVER["REQUEST_URI_APACHE"])) {
-	$_SERVER["REQUEST_URI"] = $_SERVER["REQUEST_URI_APACHE"];
+    $_SERVER["REQUEST_URI"] = $_SERVER["REQUEST_URI_APACHE"];
 }
 
 // Set up settings
@@ -31,7 +31,7 @@ $settings($containerBuilder);
 $productionBuild = filter_var($_ENV["APP_PRODUCTION_BUILD"] ?? true, FILTER_VALIDATE_BOOL);
 
 if ($productionBuild) { // Should be set to true in production
-	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
 
 // Set up dependencies

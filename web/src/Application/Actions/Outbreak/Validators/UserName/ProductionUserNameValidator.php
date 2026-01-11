@@ -15,7 +15,7 @@ final class ProductionUserNameValidator implements UserNameValidatorInterface
 
     public function criteria(): string
     {
-        return "Username must be between 3 characters and 14 characters long and use only ASCII characters, so no special symbols.";
+        return "Username must be between 3 characters and 14 characters long and use only ASCII characters, "
+            . "so no special symbols.";
     }
 }
-
