@@ -1,11 +1,11 @@
-# Dnas Packet Fixtures
+# DNAS Packet Fixtures
 
-This directory contains real packet fixtures used for testing Dnas protocol communication. These fixtures include actual request packets and their corresponding response packets captured from Dnas server interactions.
+This directory contains real packet fixtures used for testing DNAS protocol communication. These fixtures include actual request packets and their corresponding response packets captured from DNAS server interactions.
 
 ## Directory Structure
 
-- `requests/` - Contains Dnas request packets
-- `responses/` - Contains Dnas response packets corresponding to the requests
+- `requests/` - Contains DNAS request packets
+- `responses/` - Contains DNAS response packets corresponding to the requests
 
 ## File Naming Convention
 
@@ -18,7 +18,7 @@ Packet files follow a standardized naming format:
 ### Components
 
 - **`filetype`**: Either `request` or `response` indicating the packet direction
-- **`folder`**: The Dnas protocol folder/namespace (e.g., `gai-gw`)
+- **`folder`**: The DNAS protocol folder/namespace (e.g., `gai-gw`)
 - **`action`**: Packet category or variant (e.g., `regular`, `others`)
 - **`prefix`**: Hexadecimal identifier unique to the packet (e.g., `0118000000000000`)
 - **`size`**: Packet size in bytes (e.g., `308bytes`, `184bytes`)
@@ -36,4 +36,4 @@ Packet files follow a standardized naming format:
 
 ## Usage in Tests
 
-These fixtures are used in test cases to verify that the application correctly handles real Dnas protocol packets. Tests load these binary files and compare actual server responses against expected responses to ensure protocol compliance.
+These fixtures are used in test cases to verify that the application correctly handles real DNAS protocol packets. Tests load these binary files and compare actual server responses against expected responses to ensure protocol compliance.

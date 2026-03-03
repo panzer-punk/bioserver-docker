@@ -1,1 +1,1 @@
-This folder contains dependencies for project just in case.
+This folder contains project dependencies for fallback/manual use.

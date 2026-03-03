@@ -1,24 +1,25 @@
 # Open Source Outbreak Server
 
-Hi all
-
-To briefly state the goal behind this project, it's simply to preserve [dev ghostline](https://gitlab.com/users/gh0stl1ne/projects)'s Bioserver1 & 2 projects, as neither of these are available on github and both require a bit of work to get up and running.
+This project is an all-in-one Docker build for Bioserver1 and Bioserver2, bundling the game server together with DNS services, the built-in DNAS server, and a MySQL database, based on original work by [dev ghostline](https://gitlab.com/users/gh0stl1ne/projects).<br>
+It is aimed at fans and fellow enthusiasts, and supports both local server and self-hosted deployments.<br>
+The goal is to keep the game alive and accessible for the community by modernizing the stack and making private or local server deployment easy.<br>
+Development and testing are focused primarily on local server usage, so self-hosted environments may require custom image adjustments.
 
 ## Setup
-**DO IT BEFORE RUNNING GAME SERVER**
-1. run `make init`
-2. set your server IP in .env (SERVER_IP=)
-3. set your router IP or secondary dns (ROUTER_IP=)
-4. build containers `make build`
+**DO THIS BEFORE RUNNING THE GAME SERVER**
+1. Run `make init`
+2. Set your server IP in `.env` (`SERVER_IP=`)
+3. Set your router IP or secondary DNS in `.env` (`ROUTER_IP=`)
+4. Build containers with `make build`
 
-### Running game server
-**For local server set FORCE_DEV_LOGIN=true in .env**
+### Running the game server
+**For local server usage, set `FORCE_DEV_LOGIN=true` in `.env`**
 
-1. simple run `make run-daemon` or `make run`
+1. Simply run `make run-daemon` or `make run`
 
 ### After shutdown
 **DO NOT FORGET TO ENABLE systemd-resolved**\
-Simply run `make enable-systemd-resovled`
+Simply run `make enable-systemd-resolved`
 
 ## Develop
 
@@ -26,15 +27,47 @@ Simply run `make enable-systemd-resovled`
 
 By default, the web application is built in production mode and changes in the code will not be applied until the application is rebuilt.<br>
 To make changes to the code without rebuilding, follow these steps:
-1. Set APP_PRODUCTION_BUILD variable to false in .env (APP_PRODUCTION_BUILD=false)
+1. Set the `APP_PRODUCTION_BUILD` variable to `false` in `.env` (`APP_PRODUCTION_BUILD=false`)
 2. Override biofpm volume by `cp docker/docker-compose.override.dev.yaml docker-compose.override.yaml`
-3. Install composer dependecies `make composer-install`
+3. Install Composer dependencies with `make composer-install`
 
 #### Testing
 
 **IMPORTANT:** Before running tests, make sure to start the biomysql container, otherwise you may encounter database connection errors on first run.<br>
 You can start it with: `docker compose -f docker-compose.infra.yaml up -d biomysql`
 
-For running tests, there are two commands available:
+To run tests, two commands are available:
 - `make test` - runs PHPUnit tests
 - `make stan` - runs PHPStan static analysis
+
+## Environment variables by container
+
+### `bio1server` / `bio2server`
+- `SERVER_IP`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_DATABASE`
+- `DB_HOST`
+- `JAVA_DB_PARAMS`
+
+### `biodns`
+- `SERVER_IP`
+- `ROUTER_IP`
+
+### `biomysql`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_DATABASE`
+
+### `biofpm` (web)
+- `APP_PRODUCTION_BUILD` (build arg + runtime behavior)
+- `FORCE_DEV_LOGIN`
+- `DB_HOST`
+- `DB_DATABASE`
+- `DB_USER`
+- `DB_PASSWORD`
+- `LOG_ERROR` (optional)
+- `LOG_ERROR_DETAILS` (optional)
+- `LOG_LEVEL` (optional)
+- `UID` (build arg used for correct file permissions during web development, defaults to `1000`)
+- `GID` (build arg used for correct file permissions during web development, defaults to `1000`)
