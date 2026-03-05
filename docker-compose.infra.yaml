@@ -58,7 +58,6 @@ services:
     cap_add:
       - NET_ADMIN
 
-
 networks:
   bio-network:
     driver: bridge
