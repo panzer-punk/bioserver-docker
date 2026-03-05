@@ -26,7 +26,7 @@ test:
 stan:
 	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run --rm biofpm composer stan
 
-run: disable-systemd-resolved
+run:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} up
 
 run-daemon: disable-systemd-resolved
@@ -34,7 +34,6 @@ run-daemon: disable-systemd-resolved
 
 down:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} down
-	make enable-systemd-resolved
 
 disable-systemd-resolved:
 	sudo mv /etc/resolv.conf /etc/.resolv.conf

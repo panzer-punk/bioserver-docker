@@ -14,16 +14,18 @@ The `master` branch may contain in-progress changes or partially finished functi
 **DO THIS BEFORE RUNNING THE GAME SERVER**
 1. Set your server IP in `.env` (`SERVER_IP=`)
 2. Set your router IP or secondary DNS in `.env` (`ROUTER_IP=`)
-3. Build containers with `make build`
+3. (Optional) Change exposed ports in `.env` (`HTTP_PORT=`, `HTTPS_PORT=`, `DNS_PORT=`)
+4. Build containers with `make build`
 
 ### Running the game server
 **For local server usage, set `FORCE_DEV_LOGIN=true` in `.env`**
 
-1. Simply run `make run-daemon` or `make run`
+1. If you use the default DNS port (`DNS_PORT=53`), disable `systemd-resolved` before startup (`make disable-systemd-resolved`).
+2. Start the stack with `make run-daemon` or `make run`.
+3. If you use a non-default DNS port, disabling `systemd-resolved` is not required.
 
 ### After shutdown
-**DO NOT FORGET TO ENABLE systemd-resolved**\
-Simply run `make enable-systemd-resolved`
+If you disabled `systemd-resolved` for `DNS_PORT=53`, enable it again after shutdown: `make enable-systemd-resolved`
 
 ## Gateway certificates
 
@@ -79,6 +81,11 @@ To run tests, two commands are available:
 ### `biodns`
 - `SERVER_IP`
 - `ROUTER_IP`
+- `DNS_PORT` (compose port mapping for DNS service; when set to `53`, `systemd-resolved` must be disabled on host)
+
+### `biogateway`
+- `HTTP_PORT` (compose port mapping for HTTP)
+- `HTTPS_PORT` (compose port mapping for HTTPS)
 
 ### `biomysql`
 - `DB_USER`
