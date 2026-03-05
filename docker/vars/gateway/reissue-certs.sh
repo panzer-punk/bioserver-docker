@@ -42,7 +42,7 @@ EOF
 openssl genrsa -out "$CA_KEY" 1024
 openssl req -new \
   -key "$CA_KEY" \
-  -subj "/C=RU/O=Panzer Punk/OU=Mad Coders Authority/CN=gateway-local-ca" \
+  -subj "/C=US/O=VeriSign, Inc./OU=Class 3 Public Primary Certification Authority" \
   -out "$TMP_DIR/ca.csr"
 openssl x509 -req \
   -in "$TMP_DIR/ca.csr" \
@@ -87,7 +87,7 @@ EOF
 openssl genrsa -out "$CERT_KEY" 1024
 openssl req -new \
   -key "$CERT_KEY" \
-  -subj "/C=RU/O=Panzer Punk/CN=$PRIMARY_CN/emailAddress=admin@example.local" \
+  -subj "/C=JP/O=Panzer Punk/CN=$PRIMARY_CN/emailAddress=panzer_punk@1312.punk" \
   -out "$CERT_CSR"
 openssl x509 -req \
   -in "$CERT_CSR" \
