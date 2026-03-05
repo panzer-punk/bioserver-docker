@@ -54,9 +54,6 @@ openssl x509 -req \
 
 DOMAINS="
 gate1.jp.dnas.playstation.org
-gate1.eu.dnas.playstation.org
-gate1.us.dnas.playstation.org
-gate1.jp.dnas.playstaion.org
 ts01.jp.dnas.playstation.org
 dnns-p01.jp.dnas.playstation.org
 dnns-r01.jp.dnas.playstation.org
