@@ -7,10 +7,9 @@ Development and testing are focused primarily on local server usage, so self-hos
 
 ## Setup
 **DO THIS BEFORE RUNNING THE GAME SERVER**
-1. Run `make init`
-2. Set your server IP in `.env` (`SERVER_IP=`)
-3. Set your router IP or secondary DNS in `.env` (`ROUTER_IP=`)
-4. Build containers with `make build`
+1. Set your server IP in `.env` (`SERVER_IP=`)
+2. Set your router IP or secondary DNS in `.env` (`ROUTER_IP=`)
+3. Build containers with `make build`
 
 ### Running the game server
 **For local server usage, set `FORCE_DEV_LOGIN=true` in `.env`**
@@ -20,6 +19,28 @@ Development and testing are focused primarily on local server usage, so self-hos
 ### After shutdown
 **DO NOT FORGET TO ENABLE systemd-resolved**\
 Simply run `make enable-systemd-resolved`
+
+## Gateway certificates
+
+The gateway uses a local CA and one SAN server certificate for all DNAS hostnames.
+
+- Certificates are generated inside the gateway container in `/etc/dnas`.
+- If certificate files are missing, the gateway generates them automatically on container startup.
+- If you need persistent certificates between container recreations, add a host volume for `/etc/dnas`, for example:
+  ```yaml
+  services:
+    biogateway:
+      volumes:
+        - ./gateway_certs:/etc/dnas
+  ```
+- Required certificate files in `/etc/dnas`:
+  - `ca-cert.pem`
+  - `cert.pem`
+  - `cert-key.pem`
+
+To reissue certificates manually:
+1. Run inside container: `docker compose -f docker-compose.infra.yaml exec biogateway /var/www/reissue-certs.sh`
+2. Restart gateway container: `docker compose -f docker-compose.infra.yaml restart biogateway`
 
 ## Develop
 

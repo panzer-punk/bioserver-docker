@@ -50,9 +50,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm apr-util-1.6.3.tar.gz && rm -rf apr-util-1.6.3 \
     #Cleanup 
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -s /opt/openssl-1.0.2/bin/openssl /usr/local/bin/openssl
 
-COPY --chown=0:0 ./docker/vars/gateway/etc /etc/dnas 
 COPY --chown=www-data:www-data ./web/public /var/www/public
 COPY --chown=www-data:www-data ./docker/vars/gateway/static /var/www/public
 
@@ -60,5 +60,6 @@ WORKDIR /var/www
 
 COPY ./docker/vars/gateway/httpd.conf /opt/gateway/conf/httpd.conf
 COPY --chmod=754 ./docker/vars/gateway/start.sh /var/www/
+COPY --chmod=754 ./docker/vars/gateway/reissue-certs.sh /var/www/
 
 ENTRYPOINT [ "sh", "-c", "/var/www/start.sh" ]
