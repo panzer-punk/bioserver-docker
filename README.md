@@ -5,6 +5,11 @@ It is aimed at fans and fellow enthusiasts, and supports both local server and s
 The goal is to keep the game alive and accessible for the community by modernizing the stack and making private or local server deployment easy.<br>
 Development and testing are focused primarily on local server usage, so self-hosted environments may require custom image adjustments.
 
+## Recommended Download Source
+
+It is recommended to download source archives from the `Releases` tab for regular usage.
+The `master` branch may contain in-progress changes or partially finished functionality.
+
 ## Setup
 **DO THIS BEFORE RUNNING THE GAME SERVER**
 1. Set your server IP in `.env` (`SERVER_IP=`)
