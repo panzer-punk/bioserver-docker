@@ -79,6 +79,11 @@ To run tests, two commands are available:
 ### `biodns`
 - `SERVER_IP`
 - `ROUTER_IP`
+- `DNS_PORT` (compose port mapping for DNS service)
+
+### `biogateway`
+- `HTTP_PORT` (compose port mapping for HTTP)
+- `HTTPS_PORT` (compose port mapping for HTTPS)
 
 ### `biomysql`
 - `DB_USER`
