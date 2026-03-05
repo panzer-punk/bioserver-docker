@@ -50,7 +50,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm apr-util-1.6.3.tar.gz && rm -rf apr-util-1.6.3 \
     #Cleanup 
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -s /opt/openssl-1.0.2/bin/openssl /usr/local/bin/openssl
 
 COPY --chown=www-data:www-data ./web/public /var/www/public
 COPY --chown=www-data:www-data ./docker/vars/gateway/static /var/www/public
