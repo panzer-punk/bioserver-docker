@@ -59,6 +59,7 @@ dnns-p01.jp.dnas.playstation.org
 dnns-r01.jp.dnas.playstation.org
 bbn01.jp.dnas.playstation.org
 bbn02.jp.dnas.playstation.org
+www01.kddi-mmbb.jp
 "
 
 PRIMARY_CN="gate1.jp.dnas.playstation.org"
