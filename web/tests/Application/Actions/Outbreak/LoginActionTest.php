@@ -127,8 +127,8 @@ class LoginActionTest extends TestCase
      * @return void
      */
     public function testLoginActionFails(
-        string $username, 
-        string $password, 
+        string $username,
+        string $password,
         int $status,
         ?string $message,
         GameID $gameID,
@@ -179,8 +179,8 @@ class LoginActionTest extends TestCase
      * @return void
      */
     public function testRegisterActionFails(
-        string $username, 
-        string $password, 
+        string $username,
+        string $password,
         int $status,
         ?string $message,
         GameID $gameID,
@@ -221,7 +221,7 @@ class LoginActionTest extends TestCase
 
     /**
      * @dataProvider gameIDDataProvider
-     * 
+     *
      * @param GameID $gameID
      * @return void
      */
@@ -240,7 +240,7 @@ class LoginActionTest extends TestCase
         $body = (string) $response->getBody();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertStringContainsString($passwordValidator->criteria(),$body);
+        $this->assertStringContainsString($passwordValidator->criteria(), $body);
         $this->assertStringContainsString($usernameValidator->criteria(), $body);
     }
 }

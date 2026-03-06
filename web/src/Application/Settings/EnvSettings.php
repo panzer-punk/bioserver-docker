@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Settings;
 
+use App\Domain\EnvironmentType;
 use Exception;
 use Monolog\Logger;
 
@@ -13,10 +14,10 @@ class EnvSettings implements SettingsInterface
 
     public function __construct()
     {
-        $production = filter_var($_ENV["APP_PRODUCTION_BUILD"] ?? false, FILTER_VALIDATE_BOOL);
+        $production = EnvironmentType::isProduction();
 
         $this->settings = [
-            "version"             => "2.2.0",
+            "version"             => "2.4.0",
             "production"          => $production,
             "force_dev_login"     => filter_var($_ENV["FORCE_DEV_LOGIN"] ?? false, FILTER_VALIDATE_BOOL),
             "displayErrorDetails" => ! $production,

@@ -1,8 +1,4 @@
-FROM php:8.3-fpm
-
-ARG APP_PRODUCTION_BUILD
-ARG UID
-ARG GID
+FROM php:8.3-fpm AS base
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli && \
     docker-php-ext-enable mysqli && \
@@ -10,8 +6,6 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli && \
     mkdir /home/www-data && \
     chmod 755 /home/www-data && \
     chown -R www-data:www-data /home/www-data && \
-    usermod -u $UID -d /home/www-data www-data && \
-    groupmod -g $GID www-data && \
     rm -rf /var/lib/apt/lists/*
 
 #Installing and setting up DNAS
@@ -24,10 +18,22 @@ COPY ./docker/vars/web/openssl.cnf /usr/lib/ssl/openssl.cnf
 
 WORKDIR /var/www
 
-RUN if [ $APP_PRODUCTION_BUILD = true ]; then composer install --no-interaction --optimize-autoloader --no-dev; fi; \
-    chown -R www-data:www-data .
-
-USER www-data
 EXPOSE 9000
 
 CMD [ "php-fpm" ]
+
+FROM base AS development
+
+ARG UID
+ARG GID
+
+RUN usermod -u $UID -d /home/www-data www-data && \
+    groupmod -g $GID www-data
+
+USER www-data
+
+FROM base AS production
+
+USER www-data
+
+RUN composer install --no-interaction --optimize-autoloader --no-dev
