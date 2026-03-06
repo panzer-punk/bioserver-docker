@@ -1,2 +1,3 @@
 .env
 docker-compose.override.yaml
+dbdata/
