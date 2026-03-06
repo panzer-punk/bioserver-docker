@@ -15,7 +15,7 @@ enum EnvironmentType: string
     /**
      * @throws ValueError
      * @throws TypeError
-     * 
+     *
      * @return boolean
      */
     public static function isProduction(): bool
@@ -26,7 +26,7 @@ enum EnvironmentType: string
     /**
      * @throws ValueError
      * @throws TypeError
-     * 
+     *
      * @return boolean
      */
     public static function isDevelopment(): bool
@@ -37,7 +37,7 @@ enum EnvironmentType: string
     /**
      * @throws ValueError
      * @throws TypeError
-     * 
+     *
      * @return self
      */
     public static function get(): self
