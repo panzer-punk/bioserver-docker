@@ -38,6 +38,8 @@ services:
       DB_DATABASE: ${DB_DATABASE}
     networks:
       - bio-network
+    ports:
+      - "3306:3306"
     env_file:
       - .env
     volumes:

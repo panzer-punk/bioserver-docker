@@ -12,18 +12,8 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=localhost
       - JAVA_DB_PARAMS=${JAVA_DB_PARAMS}
     env_file:
       - .env
-    ports:
-      - "8300:8300"
-      - "8690:8690"
-    networks:
-      - bio-network
-
-networks:
-  bio-network:
-    driver: bridge
-    name: bio-network
-    external: true
+    network_mode: "host"
