@@ -28,7 +28,7 @@ ARG UID
 ARG GID
 
 RUN usermod -u $UID -d /home/www-data www-data && \
-    groupmod -g $GID www-data 
+    groupmod -g $GID www-data
 
 USER www-data
 

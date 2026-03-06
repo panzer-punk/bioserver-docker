@@ -20,8 +20,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-      tags:
-        - "${APP_ENV:-production}"
+      target: ${APP_ENV:-production}
     env_file:
       - .env
     depends_on:
