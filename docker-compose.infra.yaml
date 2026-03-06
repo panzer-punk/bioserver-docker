@@ -20,7 +20,7 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-        - APP_PRODUCTION_BUILD=${APP_PRODUCTION_BUILD}
+      target: ${APP_ENV:-production}
     env_file:
       - .env
     depends_on:
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./docker/vars/mysql/1_create_user.sh:/docker-entrypoint-initdb.d/1_create_user.sh
       - ./docker/vars/mysql/2_init_db.sh:/docker-entrypoint-initdb.d/2_init_db.sh
-      - ./dbdata:/var/lib/mysql
+      - dbdata:/var/lib/mysql
 
   biodns:
     restart: unless-stopped
@@ -62,3 +62,7 @@ networks:
   bio-network:
     driver: bridge
     name: bio-network
+
+volumes:
+  dbdata:
+    driver: local

@@ -6,6 +6,7 @@ use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
 use App\Application\Settings\SettingsInterface;
+use App\Domain\EnvironmentType;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
@@ -28,7 +29,7 @@ if (! empty($_SERVER["REQUEST_URI_APACHE"])) {
 $settings = require __DIR__ . '/../app/settings.php';
 $settings($containerBuilder);
 
-$productionBuild = filter_var($_ENV["APP_PRODUCTION_BUILD"] ?? true, FILTER_VALIDATE_BOOL);
+$productionBuild = EnvironmentType::isProduction();
 
 if ($productionBuild) { // Should be set to true in production
     $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');

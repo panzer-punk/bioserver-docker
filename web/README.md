@@ -5,7 +5,7 @@ It handles login and session management flows on the game server side, and also 
 
 ## Supported ENV variables
 
-- `APP_PRODUCTION_BUILD` - Enables production mode behavior.
+- `APP_ENV` - Application mode (`production` or `development`).
 - `FORCE_DEV_LOGIN` - Enables development login flow.
 - `LOG_ERROR` - Enables error logging.
 - `LOG_ERROR_DETAILS` - Enables detailed error logging.
