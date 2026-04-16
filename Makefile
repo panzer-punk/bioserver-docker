@@ -21,6 +21,12 @@ build:
 composer-install:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run biofpm composer install
 
+composer-update:
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run biofpm composer update
+
+composer-bump:
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run biofpm composer bump
+
 test:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run --rm biofpm composer test
 
