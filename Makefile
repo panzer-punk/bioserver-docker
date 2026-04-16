@@ -3,8 +3,7 @@ SHELL = /bin/sh
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-COMPOSE_FILES := $(shell ls -x docker-compose.*.yaml)
-COMPOSE_FILES_PARAM := -f $(shell echo ${COMPOSE_FILES} | sed -r 's/ / \-f /g')
+COMPOSE_FILES_PARAM := -f docker-compose.infra.yaml -f docker-compose.bio1.yaml -f docker-compose.bio2.yaml
 
 DOCKER_BIN := $(shell which docker)
 
