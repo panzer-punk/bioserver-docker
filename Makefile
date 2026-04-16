@@ -3,8 +3,9 @@ SHELL = /bin/sh
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-COMPOSE_FILES := $(filter-out docker-compose.infra.yaml docker-compose.override*.yaml,$(wildcard docker-compose.*.yaml))
-COMPOSE_FILES_PARAM := -f docker-compose.infra.yaml $(foreach file,$(COMPOSE_FILES),-f $(file))
+COMPOSE_FILES := $(filter-out docker-compose.infra.yaml docker-compose.override%.yaml,$(wildcard docker-compose.*.yaml))
+COMPOSE_OVERRIDE_FILES := $(wildcard docker-compose.override*.yaml)
+COMPOSE_FILES_PARAM := -f docker-compose.infra.yaml $(foreach file,$(COMPOSE_FILES),-f $(file)) $(foreach file,$(COMPOSE_OVERRIDE_FILES),-f $(file))
 
 DOCKER_BIN := $(shell which docker)
 
