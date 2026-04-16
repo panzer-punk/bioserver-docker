@@ -5,6 +5,16 @@ It is aimed at fans and fellow enthusiasts, and supports both local server and s
 The goal is to keep the game alive and accessible for the community by modernizing the stack and making private or local server deployment easy.<br>
 Development and testing are focused primarily on local server usage, so self-hosted environments may require custom image adjustments.
 
+## Project Status
+
+As of version `2.4`, this project is positioned as a stable base for your own local or production-like server setup, including custom extensions on top of it.
+
+- The core stack is in maintenance mode.
+- Mainline development is focused on bug fixes, dependency updates, and compatibility/security maintenance.
+- Bug reports and critical issues are handled on an ASAP basis.
+- Dependency refreshes are planned for each major `PHP` and `MySQL` release cycle.
+- Pull requests with new functionality are still welcome, especially when they improve extensibility for downstream/custom server deployments.
+
 ## Recommended Download Source
 
 It is recommended to download source archives from the `Releases` tab for regular usage.
@@ -114,3 +124,11 @@ To run tests, two commands are available:
 - `LOG_LEVEL` (optional)
 - `UID` (build arg used for correct file permissions during web development, defaults to `1000`)
 - `GID` (build arg used for correct file permissions during web development, defaults to `1000`)
+
+## Final Note
+
+This project was built through sleepless nights, confusion, trial-and-error, and persistence.<br>
+From the first successful launch to the first forks and stars, every step meant a lot.
+
+Special thanks to my friends and testers, [Domi-Domik](https://github.com/Domi-Domik) and ShooterTory, and to all contributors and everyone who showed interest in this project.
+And special thanks to YouTuber [siroldschool](https://www.youtube.com/siroldschool) for introducing me to this amazing game.
