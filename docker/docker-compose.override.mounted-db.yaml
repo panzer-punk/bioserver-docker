@@ -1,0 +1,8 @@
+# This override is used to mount the database data volume to the host machine
+# For backward compatibility with old versions of the project
+services:
+  biomysql:
+    volumes:
+      - ./docker/vars/mysql/1_create_user.sh:/docker-entrypoint-initdb.d/1_create_user.sh
+      - ./docker/vars/mysql/2_init_db.sh:/docker-entrypoint-initdb.d/2_init_db.sh
+      - ./dbdata:/var/lib/mysql

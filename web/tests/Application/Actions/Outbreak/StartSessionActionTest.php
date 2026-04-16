@@ -14,7 +14,7 @@ class StartSessionActionTest extends TestCase
 
     /**
      * @dataProvider gameIDDataProvider
-     * 
+     *
      * @param GameID $gameID
      * @return void
      */
@@ -29,7 +29,7 @@ class StartSessionActionTest extends TestCase
         );
 
         $request = $this->createRequest(
-            "GET", 
+            "GET",
             "/{$gameID->value}/startsession",
             serverParams: [
                 "REMOTE_ADDR" => "127.0.0.1",

@@ -31,7 +31,7 @@ class ViewEnterareasActionTest extends TestCase
         );
         $expectedView = Twig::create(__DIR__ . "/../../../../views", ["cache" => false])
             ->fetch(
-                "outbreak/enterareas.html.twig", 
+                "outbreak/enterareas.html.twig",
                 ["areas" => ViewEnterareasAction::getAreas()[$gameID->value]]
             );
 

@@ -27,6 +27,16 @@ The `master` branch may contain in-progress changes or partially finished functi
 ### After shutdown
 If you disabled `systemd-resolved` for `DNS_PORT=53`, enable it again after shutdown: `make enable-systemd-resolved`
 
+## Upgrade to 2.4 with database preservation
+
+To keep your existing MySQL data when upgrading to `2.4` (without dump migration), run the stack with DB mounted to the host directory:
+
+1. Stop current containers: `make down`
+2. Copy the compatibility override: `cp docker/docker-compose.override.mounted-db.yaml docker-compose.override.yaml`
+3. Start the stack again
+
+The MySQL files will be stored in `./dbdata` on the host, so database content is preserved across updates and image changes.
+
 ## Gateway certificates
 
 The gateway uses a local CA and one SAN server certificate for all DNAS hostnames.
@@ -55,7 +65,7 @@ To reissue certificates manually:
 
 By default, the web application is built in production mode and changes in the code will not be applied until the application is rebuilt.<br>
 To make changes to the code without rebuilding, follow these steps:
-1. Set the `APP_PRODUCTION_BUILD` variable to `false` in `.env` (`APP_PRODUCTION_BUILD=false`)
+1. Set `APP_ENV=development` in `.env` (production mode is `APP_ENV=production`)
 2. Override biofpm volume by `cp docker/docker-compose.override.dev.yaml docker-compose.override.yaml`
 3. Install Composer dependencies with `make composer-install`
 
@@ -93,7 +103,7 @@ To run tests, two commands are available:
 - `DB_DATABASE`
 
 ### `biofpm` (web)
-- `APP_PRODUCTION_BUILD` (build arg + runtime behavior)
+- `APP_ENV` (build arg + runtime behavior)
 - `FORCE_DEV_LOGIN`
 - `DB_HOST`
 - `DB_DATABASE`

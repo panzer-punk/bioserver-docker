@@ -35,7 +35,7 @@ class TestCase extends PHPUnit_TestCase
     protected static function getApp(): App
     {
         if (empty(self::$app)) {
-            self::$app = (new self)->getAppInstance();
+            self::$app = (new self())->getAppInstance();
         }
 
         return self::$app;
@@ -90,7 +90,7 @@ class TestCase extends PHPUnit_TestCase
 
         $containerBuilder->addDefinitions([
             LoggerInterface::class => function (ContainerInterface $c) {
-                return new NullLogger;
+                return new NullLogger();
             }
         ]);
 

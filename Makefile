@@ -3,8 +3,9 @@ SHELL = /bin/sh
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-COMPOSE_FILES := $(shell ls -x docker-compose.*.yaml)
-COMPOSE_FILES_PARAM := -f $(shell echo ${COMPOSE_FILES} | sed -r 's/ / \-f /g')
+COMPOSE_FILES := $(filter-out docker-compose.infra.yaml docker-compose.override%.yaml,$(wildcard docker-compose.*.yaml))
+COMPOSE_OVERRIDE_FILES := $(wildcard docker-compose.override*.yaml)
+COMPOSE_FILES_PARAM := -f docker-compose.infra.yaml $(foreach file,$(COMPOSE_FILES),-f $(file)) $(foreach file,$(COMPOSE_OVERRIDE_FILES),-f $(file))
 
 DOCKER_BIN := $(shell which docker)
 
@@ -15,16 +16,22 @@ init:
 	${DOCKER_BIN} compose -f docker-compose.infra.yaml pull biomysql
 
 build:
-	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} build 
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} build
 
 composer-install:
-	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run biofpm composer install
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run biofpm composer install
+
+composer-update:
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run biofpm composer update
+
+composer-bump:
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run biofpm composer bump
 
 test:
-	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run --rm biofpm composer test
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run --rm biofpm composer test
 
 stan:
-	${DOCKER_BIN} compose -f docker-compose.infra.yaml -f docker-compose.override.yaml run --rm biofpm composer stan
+	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} run --rm biofpm composer stan
 
 run:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} up
