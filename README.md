@@ -32,6 +32,7 @@ The `master` branch may contain in-progress changes or partially finished functi
 
 1. If you use the default DNS port (`DNS_PORT=53`), disable `systemd-resolved` before startup (`make disable-systemd-resolved`).
 2. Start the stack with `make run-daemon` or `make run`.
+   - If you get `network bio-network declared as external, but could not be found`, create it manually: `docker network create bio-network` (the stack starts multiple compose files at once).
 3. If you use a non-default DNS port, disabling `systemd-resolved` is not required.
 
 ### After shutdown
