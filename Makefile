@@ -14,6 +14,7 @@ init:
 	sed -i "s/GID=1000/GID=${GID}/" .env
 	sed -i "s/UID=1000/UID=${UID}/" .env
 	${DOCKER_BIN} compose -f docker-compose.infra.yaml pull biomysql
+	${DOCKER_BIN} network create bio-network || true
 
 build:
 	${DOCKER_BIN} compose ${COMPOSE_FILES_PARAM} build
