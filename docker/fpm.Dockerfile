@@ -6,14 +6,14 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli && \
     mkdir /home/www-data && \
     chmod 755 /home/www-data && \
     chown -R www-data:www-data /home/www-data && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    chown -R www-data:www-data /var/www
 
 #Installing and setting up DNAS
 WORKDIR /tmp
 
 COPY --from=composer:2.9.5 /usr/bin/composer /usr/local/bin/composer
 COPY --chown=www-data:www-data ./web /var/www
-RUN chown -R www-data:www-data /var/www
 COPY ./docker/vars/web/yy-log.conf /usr/local/etc/php-fpm.d/00-log.conf
 COPY ./docker/vars/web/openssl.cnf /usr/lib/ssl/openssl.cnf
 
