@@ -6,7 +6,8 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli && \
     mkdir /home/www-data && \
     chmod 755 /home/www-data && \
     chown -R www-data:www-data /home/www-data && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    chown -R www-data:www-data /var/www
 
 #Installing and setting up DNAS
 WORKDIR /tmp
